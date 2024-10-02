@@ -1,17 +1,16 @@
 import { createHash } from "crypto";
 import { BLOCK_SIZE, KEY_SIZE } from "./consts";
 import { ExpandedKey } from "./ExpandedKey";
-import { byte, vect } from "./types";
-import { toArray } from "../buffer-helper";
+import { vect } from "./types";
 import * as R from "ramda";
-import { createBytes, toByte } from "./utils";
+import { createBytes, toByte, toByteArray } from "./utils";
 import { GOST_Kuz_L, GOST_Kuz_S, GOST_Kuz_X } from "./gost";
 
 export const expandKey = (key: string | vect) =>
     typeof key === "string" ? expandKeyString(key) : expandKeyArray(key);
 
 const expandKeyString = (key: string): ExpandedKey =>
-    expandKeyArray(toArray<byte>(createHash("sha256").update(key).digest()));
+    expandKeyArray(toByteArray(createHash("sha256").update(key).digest(), KEY_SIZE));
 
 const expandKeyArray = (key: vect): ExpandedKey => {
     if (key.length !== KEY_SIZE) {
