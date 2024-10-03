@@ -61,7 +61,7 @@ export const GOST_Kuz_GF_mul = (in_a: byte, in_b: byte): byte => {
         a <<= 1;
         if (hi_bit != 0)
         {
-            a ^= 0xc3; //полином x^8+x^7+x^6+x+1
+            a ^= 0xc3;
         }
         b >>= 1;
     }
