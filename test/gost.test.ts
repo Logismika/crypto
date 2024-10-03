@@ -1,6 +1,6 @@
 import { byte } from '../src/utils/kuznechik/types';
-import { GOST_Kuz_GF_mul } from "../src/utils/kuznechik/gost";
-import {expect} from "chai";
+import { GOST_Kuz_GF_mul, GOST_Kuz_L } from "../src/utils/kuznechik/gost";
+import { expect } from "chai";
 
 describe('GOST Function Tests', () => {
     describe("GOST_Kuz_GF_mul", () => {
@@ -73,6 +73,32 @@ describe('GOST Function Tests', () => {
             it(`in_a = ${testItem.in_a}, in_b = ${testItem.in_b}, c = ${testItem.c}`, () => {
                 const actual = GOST_Kuz_GF_mul(testItem.in_a, testItem.in_b);
                 expect(testItem.c).to.be.equals(actual);
+            });
+        });
+    });
+
+    describe("GOST_Kuz_L", () => {
+        const testData: { in_data: byte[], expected: byte[] }[] = [{
+            in_data: [126, 25, 140, 136, 80, 195, 243, 209, 12, 234, 150, 30, 87, 199, 220, 230],
+            expected: [201, 130, 38, 15, 202, 166, 210, 227, 118, 132, 128, 34, 168, 117, 127, 210],
+        }, {
+            in_data: [41, 187, 8, 220, 74, 0, 101, 235, 194, 94, 225, 238, 117, 244, 18, 203],
+            expected: [54, 70, 144, 56, 163, 145, 184, 219, 12, 133, 155, 194, 38, 174, 228, 29],
+        }, {
+            in_data: [171, 107, 85, 87, 191, 43, 221, 142, 204, 95, 214, 217, 85, 211, 143, 206],
+            expected: [75, 1, 39, 194, 40, 195, 194, 212, 84, 152, 26, 62, 80, 35, 231, 35],
+        }, {
+            in_data: [142, 45, 229, 27, 254, 178, 2, 232, 163, 116, 163, 122, 231, 24, 175, 157],
+            expected: [215, 26, 15, 167, 58, 95, 31, 12, 131, 155, 73, 58, 136, 32, 80, 190],
+        }, {
+            in_data: [236, 152, 25, 151, 44, 17, 86, 220, 87, 117, 86, 79, 170, 116, 113, 139],
+            expected: [209, 75, 39, 85, 168, 46, 244, 147, 23, 52, 250, 247, 28, 57, 75, 241],
+        }] as const;
+
+        testData.forEach((testItem, index) => {
+            it(`test set #${index}`, () => {
+                const actual = GOST_Kuz_L(testItem.in_data);
+                expect(testItem.expected).deep.eq(actual);
             });
         });
     });
