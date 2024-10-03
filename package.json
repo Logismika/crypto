@@ -16,6 +16,7 @@
     "react-dom": "^18"
   },
   "devDependencies": {
+    "@types/chai": "^5.0.0",
     "@types/mocha": "^10.0.8",
     "@types/node": "^20",
     "@types/ramda": "^0.30.2",
