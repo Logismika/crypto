@@ -46,7 +46,7 @@ const GOST_Kuz_R = (in_data: vect): vect => {
 }
 
 
-const GOST_Kuz_GF_mul = (in_a: byte, in_b: byte): byte => {
+export const GOST_Kuz_GF_mul = (in_a: byte, in_b: byte): byte => {
     let a = in_a;
     let b = in_b;
 
@@ -55,7 +55,7 @@ const GOST_Kuz_GF_mul = (in_a: byte, in_b: byte): byte => {
     {
         if ((b & 1) != 0)
         {
-            c ^= a;
+            c = (c ^ a) % 0x100;
         }
         const hi_bit = a & 0x80;
         a <<= 1;
