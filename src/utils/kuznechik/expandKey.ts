@@ -18,13 +18,12 @@ const expandKeyArray = (key: vect): ExpandedKey => {
     }
 
     const result: ExpandedKey = {
-        iter_c: [],
+        iter_c: GOST_Kuz_Get_C(),
         iter_key: R.range(0, 10).map(() => createBytes(BLOCK_SIZE)),
-    }
+    } as const;
 
     const key_1 = key.slice(KEY_SIZE / 2);
     const key_2 = key.slice(0, KEY_SIZE / 2);
-    result.iter_c = GOST_Kuz_Get_C();
 
     result.iter_key[0] = key_1.slice();
     result.iter_key[1] = key_2.slice();

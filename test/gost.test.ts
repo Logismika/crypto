@@ -1,7 +1,5 @@
-import { byte } from '../src/utils/kuznechik/types';
-import { GOST_Kuz_GF_mul, GOST_Kuz_L } from "../src/utils/kuznechik/gost";
+import { byte, GOST_Kuz_Get_C, GOST_Kuz_GF_mul, GOST_Kuz_L } from '../src/utils/kuznechik';
 import { expect } from "chai";
-import { GOST_Kuz_Get_C } from '../src/utils/kuznechik/expandKey';
 
 describe('GOST Function Tests', () => {
     describe("GOST_Kuz_GF_mul", () => {
