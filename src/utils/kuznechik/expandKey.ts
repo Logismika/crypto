@@ -18,13 +18,13 @@ const expandKeyArray = (key: vect): ExpandedKey => {
     }
 
     const result: ExpandedKey = {
-        iter_c: R.range(0, 32).map(() => createBytes(BLOCK_SIZE)),
+        iter_c: [],
         iter_key: R.range(0, 10).map(() => createBytes(BLOCK_SIZE)),
     }
 
     const key_1 = key.slice(KEY_SIZE / 2);
     const key_2 = key.slice(0, KEY_SIZE / 2);
-    GOST_Kuz_Get_C(result.iter_c);
+    result.iter_c = GOST_Kuz_Get_C();
 
     result.iter_key[0] = key_1.slice();
     result.iter_key[1] = key_2.slice();
@@ -49,16 +49,19 @@ const expandKeyArray = (key: vect): ExpandedKey => {
 
 }
 
-const GOST_Kuz_Get_C = (iter_c: vect[]) => {
+export const GOST_Kuz_Get_C = (): vect[] => {
+    const result = R.range(0, 32).map(() => createBytes(BLOCK_SIZE))
     const iter_num = R.range(0, 32).map(() => createBytes(BLOCK_SIZE));
 
     for (let i = 0; i < iter_num.length; i++) {
         iter_num[i]![0] = toByte(i + 1);
     }
 
-    for (let i = 0; i < iter_c.length; i++) {
-        iter_c[i] = GOST_Kuz_L(iter_num[i]!);
+    for (let i = 0; i < result.length; i++) {
+        result[i] = GOST_Kuz_L(iter_num[i]!);
     }
+
+    return result;
 }
 
 const GOST_Kuz_F = (in_key_1: vect, in_key_2: vect, iter_const: vect): { out_key_1: vect, out_key_2: vect } => {
