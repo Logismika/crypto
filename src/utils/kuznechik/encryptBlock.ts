@@ -7,10 +7,10 @@ export const encryptBlock = (key: ExpandedKey, blk: vect): vect => {
 
     for (let i = 0; i < 9; i += 1)
     {
-        out_blk = GOST_Kuz_X(key.iter_key[i], out_blk);
+        out_blk = GOST_Kuz_X(key.iter_key[i]!, out_blk);
         out_blk = GOST_Kuz_S(out_blk);
         out_blk = GOST_Kuz_L(out_blk);
     }
 
-    return GOST_Kuz_X(out_blk, key.iter_key[9]);
+    return GOST_Kuz_X(out_blk, key.iter_key[9]!);
 }

@@ -6,7 +6,7 @@ export const GOST_Kuz_X = (a: vect, b: vect): vect => {
     const c = createBytes(BLOCK_SIZE);
 
     for (let i = 0; i < c.length; i += 1) {
-        c[i] = toByte(a[i] ^ b[i]);
+        c[i] = toByte(a[i]! ^ b[i]!);
     }
 
     return c;
@@ -16,7 +16,7 @@ export const GOST_Kuz_S = (in_data: vect): vect => {
     const out_data = createBytes(BLOCK_SIZE);
 
     for (let i = 0; i < out_data.length; i += 1) {
-        out_data[i] = Pi[in_data[i]];
+        out_data[i] = Pi[in_data[i]!]!;
     }
 
     return out_data;
@@ -35,10 +35,10 @@ const GOST_Kuz_R = (in_data: vect): vect => {
     const internal: vect = createBytes(16);
     for (let i = 15; i >= 0; i -= 1) {
         if (i > 0) {
-            internal[i - 1] = in_data[i];
+            internal[i - 1] = in_data[i]!;
         }
 
-        a_15 ^= GOST_Kuz_GF_mul(in_data[i], l_vec[i]);
+        a_15 ^= GOST_Kuz_GF_mul(in_data[i]!, l_vec[i]!);
     }
 
     internal[15] = toByte(a_15);

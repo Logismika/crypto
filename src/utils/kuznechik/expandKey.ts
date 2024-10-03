@@ -33,14 +33,14 @@ const expandKeyArray = (key: vect): ExpandedKey => {
     let iter_3: vect;
     let iter_4: vect;
     for (let i = 0; i < 4; i += 1) {
-        const retVal1 = GOST_Kuz_F(iter_1, iter_2, result.iter_c[0 + 8 * i]); iter_3 = retVal1.out_key_1; iter_4 = retVal1.out_key_2;
-        const retVal2 = GOST_Kuz_F(iter_3, iter_4, result.iter_c[1 + 8 * i]); iter_1 = retVal2.out_key_1; iter_2 = retVal2.out_key_2;
-        const retVal3 = GOST_Kuz_F(iter_1, iter_2, result.iter_c[2 + 8 * i]); iter_3 = retVal3.out_key_1; iter_4 = retVal3.out_key_2;
-        const retVal4 = GOST_Kuz_F(iter_3, iter_4, result.iter_c[3 + 8 * i]); iter_1 = retVal4.out_key_1; iter_2 = retVal4.out_key_2;
-        const retVal5 = GOST_Kuz_F(iter_1, iter_2, result.iter_c[4 + 8 * i]); iter_3 = retVal5.out_key_1; iter_4 = retVal5.out_key_2;
-        const retVal6 = GOST_Kuz_F(iter_3, iter_4, result.iter_c[5 + 8 * i]); iter_1 = retVal6.out_key_1; iter_2 = retVal6.out_key_2;
-        const retVal7 = GOST_Kuz_F(iter_1, iter_2, result.iter_c[6 + 8 * i]); iter_3 = retVal7.out_key_1; iter_4 = retVal7.out_key_2;
-        const retVal8 = GOST_Kuz_F(iter_3, iter_4, result.iter_c[7 + 8 * i]); iter_1 = retVal8.out_key_1; iter_2 = retVal8.out_key_2;
+        const retVal1 = GOST_Kuz_F(iter_1, iter_2, result.iter_c[0 + 8 * i]!); iter_3 = retVal1.out_key_1; iter_4 = retVal1.out_key_2;
+        const retVal2 = GOST_Kuz_F(iter_3, iter_4, result.iter_c[1 + 8 * i]!); iter_1 = retVal2.out_key_1; iter_2 = retVal2.out_key_2;
+        const retVal3 = GOST_Kuz_F(iter_1, iter_2, result.iter_c[2 + 8 * i]!); iter_3 = retVal3.out_key_1; iter_4 = retVal3.out_key_2;
+        const retVal4 = GOST_Kuz_F(iter_3, iter_4, result.iter_c[3 + 8 * i]!); iter_1 = retVal4.out_key_1; iter_2 = retVal4.out_key_2;
+        const retVal5 = GOST_Kuz_F(iter_1, iter_2, result.iter_c[4 + 8 * i]!); iter_3 = retVal5.out_key_1; iter_4 = retVal5.out_key_2;
+        const retVal6 = GOST_Kuz_F(iter_3, iter_4, result.iter_c[5 + 8 * i]!); iter_1 = retVal6.out_key_1; iter_2 = retVal6.out_key_2;
+        const retVal7 = GOST_Kuz_F(iter_1, iter_2, result.iter_c[6 + 8 * i]!); iter_3 = retVal7.out_key_1; iter_4 = retVal7.out_key_2;
+        const retVal8 = GOST_Kuz_F(iter_3, iter_4, result.iter_c[7 + 8 * i]!); iter_1 = retVal8.out_key_1; iter_2 = retVal8.out_key_2;
         result.iter_key[2 * i + 2] = iter_1.slice();
         result.iter_key[2 * i + 3] = iter_2.slice();
     }
@@ -53,11 +53,11 @@ const GOST_Kuz_Get_C = (iter_c: vect[]) => {
     const iter_num = R.range(0, 32).map(() => createBytes(BLOCK_SIZE));
 
     for (let i = 0; i < iter_num.length; i++) {
-        iter_num[i][0] = toByte(i + 1);
+        iter_num[i]![0] = toByte(i + 1);
     }
 
     for (let i = 0; i < iter_c.length; i++) {
-        iter_c[i] = GOST_Kuz_L(iter_num[i]);
+        iter_c[i] = GOST_Kuz_L(iter_num[i]!);
     }
 }
 
