@@ -63,7 +63,7 @@ export const GOST_Kuz_Get_C = (): vect[] => {
     return result;
 }
 
-const GOST_Kuz_F = (in_key_1: vect, in_key_2: vect, iter_const: vect): { out_key_1: vect, out_key_2: vect } => {
+export const GOST_Kuz_F = (in_key_1: vect, in_key_2: vect, iter_const: vect): { out_key_1: vect, out_key_2: vect } => {
     const out_key_2 = in_key_1.slice();
     const intrl1 = GOST_Kuz_X(in_key_1, iter_const);
     const intrl2 = GOST_Kuz_S(intrl1);

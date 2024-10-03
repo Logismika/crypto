@@ -1,10 +1,10 @@
-import { byte } from '../src/utils/kuznechik/types';
+import { vect } from '../src/utils/kuznechik/types';
 import { expandKey } from '../src/utils/kuznechik/expandKey';
 import { expect } from 'chai';
 
 describe('expandKey function tests', () => {
     it('Create a key', () => {
-        const test_key: byte[] = [
+        const test_key: vect = [
             0xef, 0xcd, 0xab, 0x89, 0x67, 0x45, 0x23, 0x01,
             0x10, 0x32, 0x54, 0x76, 0x98, 0xba, 0xdc, 0xfe,
             0x77, 0x66, 0x55, 0x44, 0x33, 0x22, 0x11, 0x00,
