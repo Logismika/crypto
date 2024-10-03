@@ -2,7 +2,7 @@ import { vect } from "./types";
 import { expandKey } from "./expandKey";
 import { getOutLength, toByteArray } from "./utils";
 import { BLOCK_SIZE } from "./consts";
-import { encryptBlock } from "./EncryptBlock";
+import { encryptBlock } from "./encryptBlock";
 
 export const encrypt = (key: string | vect, inStream: Uint8Array): Uint8Array => {
     const result = new Uint8Array(getOutLength(inStream.length));
