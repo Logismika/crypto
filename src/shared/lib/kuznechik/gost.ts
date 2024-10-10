@@ -1,4 +1,4 @@
-import { BLOCK_SIZE, l_vec, Pi } from "./consts";
+import { BLOCK_SIZE, l_vec, Pi, reverse_Pi } from "./consts";
 import { byte, vect } from "./types";
 import { createBytes, toByte } from "./utils";
 
@@ -22,12 +22,42 @@ export const GOST_Kuz_S = (in_data: vect): vect => {
     return out_data;
 }
 
+export const GOST_Kuz_reverse_S = (in_data: vect): vect => {
+    const out_data = createBytes(BLOCK_SIZE);
+
+    for (let i = 0; i < out_data.length; i += 1) {
+        out_data[i] = reverse_Pi[in_data[i]!]!;
+    }
+
+    return out_data;
+}
+
+export const GOST_Kuz_reverse_L = (in_data: vect): vect => {
+    let result: vect = in_data.slice();
+    for (let i = 0; i < 16; i += 1) {
+        result = GOST_Kuz_reverse_R(result);
+    }
+    return result;
+}
+
 export const GOST_Kuz_L = (in_data: vect): vect => {
     let result: vect = in_data.slice();
     for (let i = 0; i < 16; i += 1) {
         result = GOST_Kuz_R(result);
     }
     return result;
+}
+
+const GOST_Kuz_reverse_R = (state: vect): vect => {
+    let a_0 = state[15]!;
+    const internal = createBytes(BLOCK_SIZE);
+    for (let i = 1; i < internal.length; i++)
+    {
+        internal[i] = state[i - 1]!;
+        a_0 ^= GOST_Kuz_GF_mul(internal[i]!, l_vec[i]!);
+    }
+    internal[0] = a_0;
+    return internal;
 }
 
 const GOST_Kuz_R = (in_data: vect): vect => {
@@ -44,7 +74,6 @@ const GOST_Kuz_R = (in_data: vect): vect => {
     internal[15] = toByte(a_15);
     return internal;
 }
-
 
 export const GOST_Kuz_GF_mul = (in_a: byte, in_b: byte): byte => {
     let a = in_a;
