@@ -1,4 +1,4 @@
-import { byte, GOST_Kuz_F, GOST_Kuz_Get_C, GOST_Kuz_GF_mul, GOST_Kuz_L, GOST_Kuz_X, vect } from '../src/utils/kuznechik';
+import { byte, GOST_Kuz_F, GOST_Kuz_Get_C, GOST_Kuz_GF_mul, GOST_Kuz_L, GOST_Kuz_S, GOST_Kuz_X, vect } from '../src/utils/kuznechik';
 import { expect } from "chai";
 
 describe('GOST Function Tests', () => {
@@ -203,6 +203,32 @@ describe('GOST Function Tests', () => {
             it(`test set #${index}`, () => {
                 const actual = GOST_Kuz_X(testItem.a, testItem.b);
                 expect(testItem.c).deep.eq(actual);
+            });
+        });
+    });
+
+    describe("GOST_Kuz_S", () => {
+        const testData: { in_data: vect, expected: vect }[] = [{
+            in_data: [99, 27, 84, 152, 159, 165, 34, 64, 251, 181, 208, 1, 113, 245, 87, 232],
+            expected: [41, 187, 8, 220, 74, 0, 101, 235, 194, 94, 225, 238, 117, 244, 18, 203],
+        }, {
+            in_data: [71, 202, 182, 127, 88, 229, 2, 46, 79, 30, 138, 205, 182, 62, 54, 78],
+            expected: [171, 107, 85, 87, 191, 43, 221, 142, 204, 95, 214, 217, 85, 211, 143, 206],
+        }, {
+            in_data: [46, 228, 237, 209, 215, 110, 50, 153, 185, 242, 185, 148, 206, 33, 250, 108],
+            expected: [142, 45, 229, 27, 254, 178, 2, 232, 163, 116, 163, 122, 231, 24, 175, 157],
+        }, {
+            in_data: [146, 59, 114, 161, 66, 3, 83, 152, 127, 113, 83, 47, 218, 242, 225, 44],
+            expected: [236, 152, 25, 151, 44, 17, 86, 220, 87, 117, 86, 79, 170, 116, 113, 139],
+        }, {
+            in_data: [253, 68, 1, 253, 95, 249, 136, 176, 29, 50, 211, 187, 54, 244, 54, 65],
+            expected: [75, 234, 238, 75, 135, 102, 215, 173, 205, 2, 73, 125, 143, 230, 143, 52],
+        }] as const;
+
+        testData.forEach((testItem, index) => {
+            it(`test set #${index}`, () => {
+                const actual = GOST_Kuz_S(testItem.in_data);
+                expect(testItem.expected).deep.eq(actual);
             });
         });
     });
