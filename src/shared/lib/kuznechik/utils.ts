@@ -1,7 +1,7 @@
 import * as R from "ramda";
 import { byte, vect } from "./types";
-import { toArray } from "../buffer-helper";
 import { BLOCK_SIZE } from "./consts";
+import { toArray } from "../buffer-helper";
 
 export const createBytes = (count: number): vect => R.range(0, count).map(() => toByte(0));
 

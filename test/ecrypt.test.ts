@@ -1,7 +1,5 @@
-import { vect } from '../src/utils/kuznechik/types';
-import { expandKey } from '../src/utils/kuznechik/expandKey';
+import { vect, expandKey, encryptBlock } from '../src/shared';
 import { expect } from 'chai';
-import { encryptBlock } from '../src/utils/kuznechik';
 
 describe('Encrypt tests', () => {
     it('encryptBlock vect', () => {

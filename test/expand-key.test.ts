@@ -1,5 +1,4 @@
-import { vect } from '../src/utils/kuznechik/types';
-import { expandKey } from '../src/utils/kuznechik/expandKey';
+import { vect, expandKey } from '../src/shared';
 import { expect } from 'chai';
 
 describe('expandKey function tests', () => {

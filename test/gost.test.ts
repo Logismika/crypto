@@ -1,4 +1,4 @@
-import { byte, GOST_Kuz_F, GOST_Kuz_Get_C, GOST_Kuz_GF_mul, GOST_Kuz_L, GOST_Kuz_S, GOST_Kuz_X, vect } from '../src/utils/kuznechik';
+import { byte, GOST_Kuz_F, GOST_Kuz_Get_C, GOST_Kuz_GF_mul, GOST_Kuz_L, GOST_Kuz_S, GOST_Kuz_X, vect } from '../src/shared';
 import { expect } from "chai";
 
 describe('GOST Function Tests', () => {
