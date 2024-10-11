@@ -14,8 +14,11 @@ export const toByteArray = (buf: Uint8Array, length?: number): byte[] => {
         while (result.length < length) {
             result.push(0);
         }
+
+        return result.slice(0, length);
+    } else {
+        return result;
     }
-    return result;
 }
 
 export const toByte = (value: number): byte => {
