@@ -1,5 +1,7 @@
-import { vect, decrypt_testPackage, expandKey, decryptBlock } from '../src/shared';
+import * as R from 'ramda';
+import { vect, decrypt_testPackage, expandKey, decryptBlock, encrypt, decrypt, toByteArray, toByte, KEY_SIZE } from '../src/shared';
 import { expect } from 'chai';
+import { randomBytes, randomInt } from 'crypto';
 
 describe('Decrypt tests', () => {
     describe("GOST_Kuz_reverse_S", () => {
@@ -121,5 +123,59 @@ describe('Decrypt tests', () => {
         const actual = decryptBlock(expandedKey, test_string);
 
         expect(actual).deep.eq(expected);
+    });
+
+    it("simple encrypt/decrypt", () => {
+        const test_key: vect = [
+            0xef, 0xcd, 0xab, 0x89, 0x67, 0x45, 0x23, 0x01,
+            0x10, 0x32, 0x54, 0x76, 0x98, 0xba, 0xdc, 0xfe,
+            0x77, 0x66, 0x55, 0x44, 0x33, 0x22, 0x11, 0x00,
+            0xff, 0xee, 0xdd, 0xcc, 0xbb, 0xaa, 0x99, 0x88
+        ];
+
+        const source = [1, 2, 3];
+
+        const encrypted = encrypt(test_key, new Uint8Array(source));
+        const decrypted = decrypt(test_key, encrypted, source.length);
+
+        const actual = toByteArray(decrypted);
+
+        expect(actual).deep.eq(source);
+    });
+
+    it("zero encrypt/decrypt", () => {
+        const test_key: vect = [
+            0xef, 0xcd, 0xab, 0x89, 0x67, 0x45, 0x23, 0x01,
+            0x10, 0x32, 0x54, 0x76, 0x98, 0xba, 0xdc, 0xfe,
+            0x77, 0x66, 0x55, 0x44, 0x33, 0x22, 0x11, 0x00,
+            0xff, 0xee, 0xdd, 0xcc, 0xbb, 0xaa, 0x99, 0x88
+        ];
+
+        const source: vect = [];
+
+        const encrypted = encrypt(test_key, new Uint8Array(source));
+        const decrypted = decrypt(test_key, encrypted, source.length);
+
+        const actual = toByteArray(decrypted);
+
+        expect(actual).deep.eq(source);
+    });
+
+    describe("Decrypt Streams", () => {
+        const count = 5;
+        R.range(0, count).forEach(i => {
+            const test_key: vect = [...randomBytes(KEY_SIZE)].map(v => toByte(v));
+
+            const size = randomInt(1000);
+            const source: vect = [...randomBytes(size)].map(v => toByte(v));
+
+            it(`encrypt/decrypt random #${i} ${size} bytes`, () => {
+                const encrypted = encrypt(test_key, new Uint8Array(source));
+                const decrypted = decrypt(test_key, encrypted, source.length);
+        
+                const actual = toByteArray(decrypted);
+                expect(actual).deep.eq(actual);
+            });
+        });
     });
 });
