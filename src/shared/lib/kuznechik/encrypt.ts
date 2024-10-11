@@ -1,8 +1,5 @@
-import { vect } from "./types";
+import { vect, BLOCK_SIZE, toByteArray, ExpandedKey, getOutLength, GOST_Kuz_L, GOST_Kuz_S, GOST_Kuz_X } from "./common";
 import { expandKey } from "./expandKey";
-import { getOutLength, toByteArray } from "./utils";
-import { BLOCK_SIZE } from "./consts";
-import { encryptBlock } from "./encryptBlock";
 
 export const encrypt = (key: string | vect, inStream: Uint8Array): Uint8Array => {
     const result = new Uint8Array(getOutLength(inStream.length));
@@ -16,4 +13,17 @@ export const encrypt = (key: string | vect, inStream: Uint8Array): Uint8Array =>
     }
 
     return result;
+}
+
+export const encryptBlock = (key: ExpandedKey, blk: vect): vect => {
+    let out_blk = blk.slice();
+
+    for (let i = 0; i < 9; i += 1)
+    {
+        out_blk = GOST_Kuz_X(key.iter_key[i]!, out_blk);
+        out_blk = GOST_Kuz_S(out_blk);
+        out_blk = GOST_Kuz_L(out_blk);
+    }
+
+    return GOST_Kuz_X(out_blk, key.iter_key[9]!);
 }

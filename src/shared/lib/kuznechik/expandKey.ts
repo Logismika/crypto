@@ -1,10 +1,6 @@
 import { createHash } from "crypto";
-import { BLOCK_SIZE, KEY_SIZE } from "./consts";
-import { ExpandedKey } from "./ExpandedKey";
-import { vect } from "./types";
 import * as R from "ramda";
-import { createBytes, toByte, toByteArray } from "./utils";
-import { GOST_Kuz_L, GOST_Kuz_S, GOST_Kuz_X } from "./gost";
+import { vect, ExpandedKey, toByteArray, KEY_SIZE, createBytes, BLOCK_SIZE, toByte, GOST_Kuz_L, GOST_Kuz_X, GOST_Kuz_S } from "./common";
 
 export const expandKey = (key: string | vect) =>
     typeof key === "string" ? expandKeyString(key) : expandKeyArray(key);
@@ -48,7 +44,7 @@ const expandKeyArray = (key: vect): ExpandedKey => {
 
 }
 
-export const GOST_Kuz_Get_C = (): vect[] => {
+const GOST_Kuz_Get_C = (): vect[] => {
     const result = R.range(0, 32).map(() => createBytes(BLOCK_SIZE))
     const iter_num = R.range(0, 32).map(() => createBytes(BLOCK_SIZE));
 
@@ -63,7 +59,7 @@ export const GOST_Kuz_Get_C = (): vect[] => {
     return result;
 }
 
-export const GOST_Kuz_F = (in_key_1: vect, in_key_2: vect, iter_const: vect): { out_key_1: vect, out_key_2: vect } => {
+const GOST_Kuz_F = (in_key_1: vect, in_key_2: vect, iter_const: vect): { out_key_1: vect, out_key_2: vect } => {
     const out_key_2 = in_key_1.slice();
     const intrl1 = GOST_Kuz_X(in_key_1, iter_const);
     const intrl2 = GOST_Kuz_S(intrl1);
@@ -72,3 +68,5 @@ export const GOST_Kuz_F = (in_key_1: vect, in_key_2: vect, iter_const: vect): { 
 
     return { out_key_1, out_key_2 }
 }
+
+export const expandKey_testPack = { GOST_Kuz_Get_C, GOST_Kuz_F }
