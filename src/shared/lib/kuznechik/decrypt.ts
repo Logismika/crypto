@@ -42,4 +42,4 @@ const GOST_Kuz_reverse_R = (state: vect): vect => {
     return internal;
 }
 
-export const decryptBlock_testPackage = { GOST_Kuz_reverse_S, GOST_Kuz_reverse_L, GOST_Kuz_reverse_R } as const;
+export const decrypt_testPackage = { GOST_Kuz_reverse_S, GOST_Kuz_reverse_L, GOST_Kuz_reverse_R } as const;
