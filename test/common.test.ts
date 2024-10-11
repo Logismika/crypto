@@ -1,5 +1,5 @@
 import * as R from 'ramda';
-import { byte, createBytes, getOutLength, GOST_Kuz_GF_mul, GOST_Kuz_L, GOST_Kuz_S, GOST_Kuz_X, toByte, toByteArray, vect } from '../src/shared';
+import { byte, createBytes, getOutLength, GOST_Kuz_GF_mul, GOST_Kuz_L, GOST_Kuz_L_testPackage, GOST_Kuz_S, GOST_Kuz_X, toByte, toByteArray, vect } from '../src/shared';
 import { expect } from "chai";
 import { randomBytes, randomInt } from 'crypto';
 
@@ -130,6 +130,32 @@ describe('Common Function Tests', () => {
         });
     });
 
+    describe("GOST_Kuz_R", () => {
+        const testData: { in_data: vect, expected: vect }[] = [{
+            in_data: [120, 107, 251, 134, 36, 255, 214, 240, 235, 42, 209, 41, 178, 175, 228, 91],
+            expected: [107, 251, 134, 36, 255, 214, 240, 235, 42, 209, 41, 178, 175, 228, 91, 51],
+        }, {
+            in_data: [107, 251, 134, 36, 255, 214, 240, 235, 42, 209, 41, 178, 175, 228, 91, 51],
+            expected: [251, 134, 36, 255, 214, 240, 235, 42, 209, 41, 178, 175, 228, 91, 51, 15],
+        }, {
+            in_data: [251, 134, 36, 255, 214, 240, 235, 42, 209, 41, 178, 175, 228, 91, 51, 15],
+            expected: [134, 36, 255, 214, 240, 235, 42, 209, 41, 178, 175, 228, 91, 51, 15, 212],
+        }, {
+            in_data: [58, 84, 55, 131, 254, 82, 91, 139, 120, 208, 100, 64, 197, 169, 228, 240],
+            expected: [84, 55, 131, 254, 82, 91, 139, 120, 208, 100, 64, 197, 169, 228, 240, 39],
+        }, {
+            in_data: [84, 55, 131, 254, 82, 91, 139, 120, 208, 100, 64, 197, 169, 228, 240, 39],
+            expected: [55, 131, 254, 82, 91, 139, 120, 208, 100, 64, 197, 169, 228, 240, 39, 106],
+        }] as const;
+
+        testData.forEach((testItem, index) => {
+            it(`test set #${index}`, () => {
+                const actual = GOST_Kuz_L_testPackage.GOST_Kuz_R(testItem.in_data);
+                expect(testItem.expected).deep.eq(actual);
+            });
+        });
+    });
+
     describe("GOST_Kuz_X", () => {
         const testData: { a: vect, b: vect, c: vect }[] = [{
             a: [105, 128, 217, 247, 121, 127, 113, 126, 97, 141, 88, 24, 38, 208, 94, 105],
@@ -226,10 +252,10 @@ describe('Common Function Tests', () => {
                 });
             });
 
-            const sourceData: {source: vect, length?: number, expected: vect}[] = [
-                {source: [1, 2, 3], expected: [1, 2, 3]},
-                {source: [1, 2, 3], length: 2, expected: [1, 2]},
-                {source: [1, 2, 3], length: 5, expected: [1, 2, 3, 0, 0]}
+            const sourceData: { source: vect, length?: number, expected: vect }[] = [
+                { source: [1, 2, 3], expected: [1, 2, 3] },
+                { source: [1, 2, 3], length: 2, expected: [1, 2] },
+                { source: [1, 2, 3], length: 5, expected: [1, 2, 3, 0, 0] }
             ];
 
             sourceData.forEach(testItem => {
