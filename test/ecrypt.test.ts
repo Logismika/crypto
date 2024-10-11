@@ -1,4 +1,4 @@
-import { vect, expandKey, encryptBlock } from '../src/shared';
+import { vect, expandKey, encryptBlock } from '../src/kuznechik';
 import { expect } from 'chai';
 
 describe('Encrypt tests', () => {

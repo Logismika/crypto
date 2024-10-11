@@ -1,5 +1,5 @@
 import * as R from 'ramda';
-import { byte, createBytes, getOutLength, GOST_Kuz_GF_mul, GOST_Kuz_L, GOST_Kuz_L_testPackage, GOST_Kuz_S, GOST_Kuz_X, toByte, toByteArray, vect } from '../src/shared';
+import { byte, createBytes, getOutLength, GOST_Kuz_GF_mul, GOST_Kuz_L, GOST_Kuz_L_testPackage, GOST_Kuz_S, GOST_Kuz_X, toByte, toByteArray, vect } from '../src/kuznechik';
 import { expect } from "chai";
 import { randomBytes, randomInt } from 'crypto';
 

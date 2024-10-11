@@ -1,4 +1,4 @@
-import { vect, expandKey, expandKey_testPack } from '../src/shared';
+import { vect, expandKey, expandKey_testPack } from '../src/kuznechik';
 import { expect } from 'chai';
 
 describe('expandKey function tests', () => {

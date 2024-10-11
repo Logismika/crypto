@@ -1,32 +1,45 @@
 {
-  "name": "crypto-web",
-  "version": "0.1.0",
-  "private": true,
+  "name": "@logismika/crypto",
+  "version": "0.2.0-d1",
+  "private": false,
+  "main": "./build/cjs/index.js",
+  "module": "./build/esm/index.js",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
+    "build": "npm run build:esm && npm run build:cjs",
+    "build:esm": "tsc",
+    "build:cjs": "tsc --module commonjs --outDir build/cjs",
     "test": "mocha"
   },
   "dependencies": {
-    "next": "14.2.13",
-    "ramda": "^0.30.1",
-    "react": "^18",
-    "react-dom": "^18"
+    "ramda": "^0.30.1"
   },
   "devDependencies": {
     "@types/chai": "^5.0.0",
     "@types/mocha": "^10.0.8",
     "@types/node": "^20",
     "@types/ramda": "^0.30.2",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
     "chai": "^4",
-    "eslint": "^8",
-    "eslint-config-next": "14.2.13",
     "mocha": "^10.7.3",
     "ts-node": "^10.9.2",
     "typescript": "^5"
-  }
+  },
+  "description": "Crypto algorithms library",
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Logismika/crypto.git"
+  },
+  "keywords": [
+    "crypto",
+    "gost",
+    "kuznechik"
+  ],
+  "author": "Logismika",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Logismika/crypto/issues"
+  },
+  "homepage": "https://github.com/Logismika/crypto#readme"
 }
