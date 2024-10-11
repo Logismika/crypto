@@ -9,7 +9,9 @@
   "types": "./dist/src/main/index.d.ts",
 
   "scripts": {
-    "build": "tsc",
+    "build": "npm run build:esm && npm run build:cjs",
+    "build:esm": "tsc",
+    "build:cjs": "tsc --module commonjs --outDir build/cjs",
     "lint": "lint",
     "test": "mocha"
   },
