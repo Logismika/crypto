@@ -2,17 +2,12 @@
   "name": "@logismika/crypto",
   "version": "0.2.0-d1",
   "private": false,
-  "main": "./dist/src/main/index.js",
-  "files": [
-    "dist"
-  ],
-  "types": "./dist/src/main/index.d.ts",
-
+  "main": "./build/cjs/index.js",
+  "module": "./build/esm/index.js",
   "scripts": {
     "build": "npm run build:esm && npm run build:cjs",
     "build:esm": "tsc",
     "build:cjs": "tsc --module commonjs --outDir build/cjs",
-    "lint": "lint",
     "test": "mocha"
   },
   "dependencies": {
@@ -27,5 +22,24 @@
     "mocha": "^10.7.3",
     "ts-node": "^10.9.2",
     "typescript": "^5"
-  }
+  },
+  "description": "Crypto algorithms library",
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Logismika/crypto.git"
+  },
+  "keywords": [
+    "crypto",
+    "gost",
+    "kuznechik"
+  ],
+  "author": "Logismika",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Logismika/crypto/issues"
+  },
+  "homepage": "https://github.com/Logismika/crypto#readme"
 }
