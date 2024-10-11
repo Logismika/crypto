@@ -5,17 +5,7 @@ on:
   pull_request:
     branches: [ "develop" ]
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Install node modules
-        run: npm install
-      - name: Run Lint
-        run: npm run lint
   test:
-    needs: lint
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code

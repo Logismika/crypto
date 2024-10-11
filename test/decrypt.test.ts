@@ -1,5 +1,5 @@
 import * as R from 'ramda';
-import { vect, decrypt_testPackage, expandKey, decryptBlock, encrypt, decrypt, toByteArray, toByte, KEY_SIZE } from '../src/shared';
+import { vect, decrypt_testPackage, expandKey, decryptBlock, encrypt, decrypt, toByteArray, toByte, KEY_SIZE } from '../src/kuznechik';
 import { expect } from 'chai';
 import { randomBytes, randomInt } from 'crypto';
 
