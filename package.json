@@ -41,5 +41,8 @@
   "bugs": {
     "url": "https://github.com/Logismika/crypto/issues"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "homepage": "https://github.com/Logismika/crypto#readme"
 }
