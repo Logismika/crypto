@@ -191,14 +191,7 @@ describe('Common Function Tests', () => {
 
             failTestData.forEach(testItem => {
                 it(`toByte(${testItem})`, () => {
-                    try {
-                        toByte(testItem);
-                    } catch (err) {
-                        expect(err instanceof RangeError).eq(true);
-                        return;
-                    }
-
-                    expect.fail("Should throw exception.");
+                    expect(() => toByte(testItem)).to.throw(RangeError);
                 });
             });
         });
