@@ -1,6 +1,6 @@
 {
   "name": "@logismika/crypto",
-  "version": "0.2.0-d1",
+  "version": "0.2.0",
   "private": false,
   "main": "./build/cjs/index.js",
   "module": "./build/esm/index.js",
