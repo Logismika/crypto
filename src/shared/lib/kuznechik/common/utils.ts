@@ -4,15 +4,15 @@ import { BLOCK_SIZE } from "./consts";
 
 export const createBytes = (count: number): vect => R.range(0, count).map(() => toByte(0));
 
-export const toArray = <T extends number>(buf: Uint8Array, length?: number): T[] => {
-    const result: T[] = [];
+export const toByteArray = (buf: Uint8Array, length?: number): byte[] => {
+    const result: byte[] = [];
     buf.forEach((value) => {
-        result.push(value as T);
+        result.push(toByte(value));
     });
 
     if (!R.isNil(length)) {
         while (result.length < length) {
-            result.push(0 as T);
+            result.push(0);
         }
     }
     return result;
@@ -25,8 +25,6 @@ export const toByte = (value: number): byte => {
 
     return value as byte;
 }
-
-export const toByteArray = (buf: Uint8Array, length: number): vect => toArray<byte>(buf, length);
 
 export const getOutLength = (inLength: number): number =>
     Math.floor(inLength / BLOCK_SIZE) * BLOCK_SIZE + (inLength % BLOCK_SIZE === 0 ? 0 : BLOCK_SIZE);

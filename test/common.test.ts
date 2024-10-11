@@ -1,7 +1,7 @@
-import { byte, GOST_Kuz_GF_mul, GOST_Kuz_L, GOST_Kuz_S, GOST_Kuz_X, vect } from '../src/shared';
+import { byte, createBytes, getOutLength, GOST_Kuz_GF_mul, GOST_Kuz_L, GOST_Kuz_S, GOST_Kuz_X, toByte, vect } from '../src/shared';
 import { expect } from "chai";
 
-describe('GOST Function Tests', () => {
+describe('Common Function Tests', () => {
     describe("GOST_Kuz_GF_mul", () => {
         const testData: { in_a: byte, in_b: byte, c: byte }[] = [
             { in_a: 92, in_b: 133, c: 45 },
@@ -151,6 +151,72 @@ describe('GOST Function Tests', () => {
             it(`test set #${index}`, () => {
                 const actual = GOST_Kuz_S(testItem.in_data);
                 expect(testItem.expected).deep.eq(actual);
+            });
+        });
+    });
+
+    describe("Utils", () => {
+        describe("createBytes", () => {
+            const testData: { count: number, expected: vect }[] = [
+                { count: -1, expected: [] },
+                { count: 0, expected: [] },
+                { count: 1, expected: [0] },
+                { count: 5, expected: [0, 0, 0, 0, 0] }
+            ];
+
+            testData.forEach(testItem => {
+                it(`createBytes(${testItem.count})`, () => {
+                    const actual = createBytes(testItem.count);
+                    expect(testItem.expected).deep.eq(actual);
+                });
+            });
+        });
+
+        describe("toByte", () => {
+            const passTestData: { input: number, expected: byte }[] = [
+                { input: 0, expected: 0 },
+                { input: 1, expected: 1 },
+                { input: 37, expected: 37 },
+                { input: 255, expected: 255 },
+            ];
+
+            passTestData.forEach(testItem => {
+                it(`toByte(${testItem.input})`, () => {
+                    const actual = toByte(testItem.input);
+                    expect(testItem.expected).eq(actual);
+                });
+            });
+
+            const failTestData = [-1, 256];
+
+            failTestData.forEach(testItem => {
+                it(`toByte(${testItem})`, () => {
+                    try {
+                        toByte(testItem);
+                    } catch (err) {
+                        expect(err instanceof RangeError).eq(true);
+                        return;
+                    }
+
+                    expect.fail("Should throw exception.");
+                });
+            });
+        });
+
+        describe("getOutLength", () => {
+            const passTestData: { input: number, expected: number }[] = [
+                { input: 0, expected: 0 },
+                { input: 1, expected: 16 },
+                { input: 16, expected: 16 },
+                { input: 37, expected: 48 },
+                { input: 255, expected: 256 },
+            ];
+
+            passTestData.forEach(testItem => {
+                it(`getOutLength(${testItem.input})`, () => {
+                    const actual = getOutLength(testItem.input);
+                    expect(testItem.expected).eq(actual);
+                });
             });
         });
     });
