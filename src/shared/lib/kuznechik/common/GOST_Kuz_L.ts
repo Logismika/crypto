@@ -25,3 +25,5 @@ const GOST_Kuz_R = (in_data: vect): vect => {
     internal[15] = toByte(a_15);
     return internal;
 }
+
+export const GOST_Kuz_L_testPackage = { GOST_Kuz_R } as const;

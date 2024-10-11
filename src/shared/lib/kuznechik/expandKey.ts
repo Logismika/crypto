@@ -69,4 +69,4 @@ const GOST_Kuz_F = (in_key_1: vect, in_key_2: vect, iter_const: vect): { out_key
     return { out_key_1, out_key_2 }
 }
 
-export const expandKey_testPack = { GOST_Kuz_Get_C, GOST_Kuz_F }
+export const expandKey_testPack = { GOST_Kuz_Get_C, GOST_Kuz_F } as const;
