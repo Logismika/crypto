@@ -1,5 +1,5 @@
 import * as R from 'ramda';
-import { byte, createBytes, getOutLength, GOST_Kuz_GF_mul, GOST_Kuz_L, GOST_Kuz_L_testPackage, GOST_Kuz_S, GOST_Kuz_X, toByte, toByteArray, vect } from '../src/kuznechik';
+import { byte, getOutLength, GOST_Kuz_GF_mul, GOST_Kuz_L, GOST_Kuz_L_testPackage, GOST_Kuz_S, GOST_Kuz_X, toByte, toByteArray } from '../src/kuznechik';
 import { expect } from "chai";
 import { randomBytes, randomInt } from 'crypto';
 
@@ -79,7 +79,7 @@ describe('Common Function Tests', () => {
     });
 
     describe("GOST_Kuz_L", () => {
-        const testData: { in_data: vect, expected: vect }[] = [{
+        const testData: { in_data: byte[], expected: byte[] }[] = [{
             in_data: [126, 25, 140, 136, 80, 195, 243, 209, 12, 234, 150, 30, 87, 199, 220, 230],
             expected: [201, 130, 38, 15, 202, 166, 210, 227, 118, 132, 128, 34, 168, 117, 127, 210],
         }, {
@@ -98,14 +98,14 @@ describe('Common Function Tests', () => {
 
         testData.forEach((testItem, index) => {
             it(`test set #${index}`, () => {
-                const actual = GOST_Kuz_L(testItem.in_data);
-                expect(testItem.expected).deep.eq(actual);
+                const actual = GOST_Kuz_L(new Uint8Array(testItem.in_data));
+                expect(testItem.expected).deep.eq(toByteArray(actual));
             });
         });
     });
 
     describe("GOST_Kuz_S", () => {
-        const testData: { in_data: vect, expected: vect }[] = [{
+        const testData: { in_data: byte[], expected: byte[] }[] = [{
             in_data: [99, 27, 84, 152, 159, 165, 34, 64, 251, 181, 208, 1, 113, 245, 87, 232],
             expected: [41, 187, 8, 220, 74, 0, 101, 235, 194, 94, 225, 238, 117, 244, 18, 203],
         }, {
@@ -124,14 +124,14 @@ describe('Common Function Tests', () => {
 
         testData.forEach((testItem, index) => {
             it(`test set #${index}`, () => {
-                const actual = GOST_Kuz_S(testItem.in_data);
-                expect(testItem.expected).deep.eq(actual);
+                const actual = GOST_Kuz_S(new Uint8Array(testItem.in_data));
+                expect(testItem.expected).deep.eq(toByteArray(actual));
             });
         });
     });
 
     describe("GOST_Kuz_R", () => {
-        const testData: { in_data: vect, expected: vect }[] = [{
+        const testData: { in_data: byte[], expected: byte[] }[] = [{
             in_data: [120, 107, 251, 134, 36, 255, 214, 240, 235, 42, 209, 41, 178, 175, 228, 91],
             expected: [107, 251, 134, 36, 255, 214, 240, 235, 42, 209, 41, 178, 175, 228, 91, 51],
         }, {
@@ -150,14 +150,14 @@ describe('Common Function Tests', () => {
 
         testData.forEach((testItem, index) => {
             it(`test set #${index}`, () => {
-                const actual = GOST_Kuz_L_testPackage.GOST_Kuz_R(testItem.in_data);
-                expect(testItem.expected).deep.eq(actual);
+                const actual = GOST_Kuz_L_testPackage.GOST_Kuz_R(new Uint8Array(testItem.in_data));
+                expect(testItem.expected).deep.eq(toByteArray(actual));
             });
         });
     });
 
     describe("GOST_Kuz_X", () => {
-        const testData: { a: vect, b: vect, c: vect }[] = [{
+        const testData: { a: byte[], b: byte[], c: byte[] }[] = [{
             a: [105, 128, 217, 247, 121, 127, 113, 126, 97, 141, 88, 24, 38, 208, 94, 105],
             b: [92, 235, 130, 81, 224, 147, 93, 39, 82, 168, 96, 220, 226, 39, 115, 88],
             c: [53, 107, 91, 166, 153, 236, 44, 89, 51, 37, 56, 196, 196, 247, 45, 49],
@@ -177,29 +177,13 @@ describe('Common Function Tests', () => {
 
         testData.forEach((testItem, index) => {
             it(`test set #${index}`, () => {
-                const actual = GOST_Kuz_X(testItem.a, testItem.b);
-                expect(testItem.c).deep.eq(actual);
+                const actual = GOST_Kuz_X(new Uint8Array(testItem.a), new Uint8Array(testItem.b));
+                expect(testItem.c).deep.eq(toByteArray(actual));
             });
         });
     });
 
     describe("Utils", () => {
-        describe("createBytes", () => {
-            const testData: { count: number, expected: vect }[] = [
-                { count: -1, expected: [] },
-                { count: 0, expected: [] },
-                { count: 1, expected: [0] },
-                { count: 5, expected: [0, 0, 0, 0, 0] }
-            ];
-
-            testData.forEach(testItem => {
-                it(`createBytes(${testItem.count})`, () => {
-                    const actual = createBytes(testItem.count);
-                    expect(testItem.expected).deep.eq(actual);
-                });
-            });
-        });
-
         describe("toByte", () => {
             const passTestData: { input: number, expected: byte }[] = [
                 { input: 0, expected: 0 },
@@ -246,22 +230,9 @@ describe('Common Function Tests', () => {
             R.range(0, count).forEach(i => {
                 it(`toByteArray() random #${i}`, () => {
                     const size = randomInt(10000);
-                    const source: vect = [...randomBytes(size)].map(v => toByte(v));
+                    const source: byte[] = [...randomBytes(size)].map(v => toByte(v));
                     const actual = toByteArray(new Uint8Array(source));
-                    expect(actual).deep.eq(actual);
-                });
-            });
-
-            const sourceData: { source: vect, length?: number, expected: vect }[] = [
-                { source: [1, 2, 3], expected: [1, 2, 3] },
-                { source: [1, 2, 3], length: 2, expected: [1, 2] },
-                { source: [1, 2, 3], length: 5, expected: [1, 2, 3, 0, 0] }
-            ];
-
-            sourceData.forEach(testItem => {
-                it(`toByteArray([${testItem.source}], ${testItem.length})`, () => {
-                    const actual = toByteArray(new Uint8Array(testItem.source), testItem.length);
-                    expect(testItem.expected).deep.eq(actual);
+                    expect(actual).deep.eq(source);
                 });
             });
         });

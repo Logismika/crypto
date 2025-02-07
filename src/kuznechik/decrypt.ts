@@ -1,7 +1,7 @@
-import { vect, GOST_Kuz_X, createBytes, BLOCK_SIZE, reverse_Pi, GOST_Kuz_GF_mul, l_vec, ExpandedKey, toByteArray } from "./common";
+import { GOST_Kuz_X, BLOCK_SIZE, reverse_Pi, GOST_Kuz_GF_mul, l_vec, ExpandedKey, toByte } from "./common";
 import { expandKey } from "./expandKey";
 
-export const decrypt = (key: string | vect, inStream: Uint8Array, length: number): Uint8Array => {
+export const decrypt = (key: string | Uint8Array, inStream: Uint8Array, length: number): Uint8Array => {
     if (inStream.length < length) {
         throw new Error("inStream's length shoud be greater or equal to length.");
     }
@@ -16,7 +16,7 @@ export const decrypt = (key: string | vect, inStream: Uint8Array, length: number
 
     for (let i = 0; i < inStream.length; i += BLOCK_SIZE) {
         const delta = length - i;
-        const block = toByteArray(inStream.subarray(i, BLOCK_SIZE));
+        const block = inStream.subarray(i, BLOCK_SIZE);
         const decrypted = decryptBlock(expandedKey, block);
         const len = delta < BLOCK_SIZE ? delta : BLOCK_SIZE;
         result.set(decrypted.slice(0, len), i);
@@ -25,7 +25,7 @@ export const decrypt = (key: string | vect, inStream: Uint8Array, length: number
     return result;
 }
 
-export const decryptBlock = (key: ExpandedKey, blk: vect): vect => {
+export const decryptBlock = (key: ExpandedKey, blk: Uint8Array): Uint8Array => {
     let out_blk = blk.slice();
 
     out_blk = GOST_Kuz_X(out_blk, key.iter_key[9]!);
@@ -37,8 +37,8 @@ export const decryptBlock = (key: ExpandedKey, blk: vect): vect => {
     return out_blk;
 }
 
-const GOST_Kuz_reverse_S = (in_data: vect): vect => {
-    const out_data = createBytes(BLOCK_SIZE);
+const GOST_Kuz_reverse_S = (in_data: Uint8Array): Uint8Array => {
+    const out_data = new Uint8Array(BLOCK_SIZE);
 
     for (let i = 0; i < out_data.length; i += 1) {
         out_data[i] = reverse_Pi[in_data[i]!]!;
@@ -47,20 +47,20 @@ const GOST_Kuz_reverse_S = (in_data: vect): vect => {
     return out_data;
 }
 
-const GOST_Kuz_reverse_L = (in_data: vect): vect => {
-    let result: vect = in_data.slice();
+const GOST_Kuz_reverse_L = (in_data: Uint8Array): Uint8Array => {
+    let result = in_data.slice();
     for (let i = 0; i < 16; i += 1) {
         result = GOST_Kuz_reverse_R(result);
     }
     return result;
 }
 
-const GOST_Kuz_reverse_R = (state: vect): vect => {
+const GOST_Kuz_reverse_R = (state: Uint8Array): Uint8Array => {
     let a_0 = state[15]!;
-    const internal = createBytes(BLOCK_SIZE);
+    const internal = new Uint8Array(BLOCK_SIZE);;
     for (let i = 1; i < internal.length; i++) {
         internal[i] = state[i - 1]!;
-        a_0 ^= GOST_Kuz_GF_mul(internal[i]!, l_vec[i]!);
+        a_0 ^= GOST_Kuz_GF_mul(toByte(internal[i]!), toByte(l_vec[i]!));
     }
     internal[0] = a_0;
     return internal;

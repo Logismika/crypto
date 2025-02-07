@@ -1,21 +1,21 @@
 import { createHash } from "crypto";
 import * as R from "ramda";
-import { vect, ExpandedKey, toByteArray, KEY_SIZE, createBytes, BLOCK_SIZE, toByte, GOST_Kuz_L, GOST_Kuz_X, GOST_Kuz_S } from "./common";
+import { ExpandedKey, alignByteArray, KEY_SIZE, BLOCK_SIZE, toByte, GOST_Kuz_L, GOST_Kuz_X, GOST_Kuz_S } from "./common";
 
-export const expandKey = (key: string | vect) =>
+export const expandKey = (key: string | Uint8Array) =>
     typeof key === "string" ? expandKeyString(key) : expandKeyArray(key);
 
 const expandKeyString = (key: string): ExpandedKey =>
-    expandKeyArray(toByteArray(createHash("sha256").update(key).digest(), KEY_SIZE));
+    expandKeyArray(alignByteArray(createHash("sha256").update(key).digest(), KEY_SIZE));
 
-const expandKeyArray = (key: vect): ExpandedKey => {
+const expandKeyArray = (key: Uint8Array): ExpandedKey => {
     if (key.length !== KEY_SIZE) {
         throw new Error(`Key's length must be ${KEY_SIZE}.`);
     }
 
     const result: ExpandedKey = {
         iter_c: GOST_Kuz_Get_C(),
-        iter_key: R.range(0, 10).map(() => createBytes(BLOCK_SIZE)),
+        iter_key: R.range(0, 10).map(() => new Uint8Array(BLOCK_SIZE)),
     } as const;
 
     const key_1 = key.slice(KEY_SIZE / 2);
@@ -25,8 +25,8 @@ const expandKeyArray = (key: vect): ExpandedKey => {
     result.iter_key[1] = key_2.slice();
     let iter_1 = key_1.slice();
     let iter_2 = key_2.slice();
-    let iter_3: vect;
-    let iter_4: vect;
+    let iter_3: Uint8Array;
+    let iter_4: Uint8Array;
     for (let i = 0; i < 4; i += 1) {
         const retVal1 = GOST_Kuz_F(iter_1, iter_2, result.iter_c[0 + 8 * i]!); iter_3 = retVal1.out_key_1; iter_4 = retVal1.out_key_2;
         const retVal2 = GOST_Kuz_F(iter_3, iter_4, result.iter_c[1 + 8 * i]!); iter_1 = retVal2.out_key_1; iter_2 = retVal2.out_key_2;
@@ -44,9 +44,9 @@ const expandKeyArray = (key: vect): ExpandedKey => {
 
 }
 
-const GOST_Kuz_Get_C = (): vect[] => {
-    const result = R.range(0, 32).map(() => createBytes(BLOCK_SIZE))
-    const iter_num = R.range(0, 32).map(() => createBytes(BLOCK_SIZE));
+const GOST_Kuz_Get_C = (): Uint8Array[] => {
+    const result = R.range(0, 32).map(() => new Uint8Array(BLOCK_SIZE))
+    const iter_num = R.range(0, 32).map(() => new Uint8Array(BLOCK_SIZE));
 
     for (let i = 0; i < iter_num.length; i++) {
         iter_num[i]![0] = toByte(i + 1);
@@ -59,7 +59,7 @@ const GOST_Kuz_Get_C = (): vect[] => {
     return result;
 }
 
-const GOST_Kuz_F = (in_key_1: vect, in_key_2: vect, iter_const: vect): { out_key_1: vect, out_key_2: vect } => {
+const GOST_Kuz_F = (in_key_1: Uint8Array, in_key_2: Uint8Array, iter_const: Uint8Array): { out_key_1: Uint8Array, out_key_2: Uint8Array } => {
     const out_key_2 = in_key_1.slice();
     const intrl1 = GOST_Kuz_X(in_key_1, iter_const);
     const intrl2 = GOST_Kuz_S(intrl1);

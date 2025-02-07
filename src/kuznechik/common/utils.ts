@@ -1,24 +1,23 @@
-import * as R from "ramda";
-import { byte, vect } from "./types";
+import { byte } from "./types";
 import { BLOCK_SIZE } from "./consts";
 
-export const createBytes = (count: number): vect => R.range(0, count).map(() => toByte(0));
+export const alignByteArray = (buf: Uint8Array, length: number): Uint8Array => {
+    const result = new Uint8Array(length);
+    if (buf.length > length) {
+        result.set(buf.slice(0, length));
+    } else {
+        result.set(buf, 0);
+    }
 
-export const toByteArray = (buf: Uint8Array, length?: number): vect => {
-    const result: vect = [];
+    return result;
+}
+
+export const toByteArray = (buf: Uint8Array): byte[] => {
+    const result: byte[] = [];
     buf.forEach((value) => {
         result.push(toByte(value));
     });
-
-    if (!R.isNil(length)) {
-        while (result.length < length) {
-            result.push(0);
-        }
-
-        return result.slice(0, length);
-    } else {
-        return result;
-    }
+    return result;
 }
 
 export const toByte = (value: number): byte => {
