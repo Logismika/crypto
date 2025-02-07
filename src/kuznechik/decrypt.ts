@@ -1,7 +1,7 @@
 import { GOST_Kuz_X, BLOCK_SIZE, reverse_Pi, GOST_Kuz_GF_mul, l_vec, ExpandedKey, toByte } from "./common";
 import { expandKey } from "./expandKey";
 
-export const decrypt = (key: string | Uint8Array, inStream: Uint8Array, length: number): Uint8Array => {
+export const decrypt = async (key: string | Uint8Array, inStream: Uint8Array, length: number): Promise<Uint8Array> => {
     if (inStream.length < length) {
         throw new Error("inStream's length shoud be greater or equal to length.");
     }
@@ -12,7 +12,7 @@ export const decrypt = (key: string | Uint8Array, inStream: Uint8Array, length: 
 
     const result = new Uint8Array(length);
 
-    const expandedKey = expandKey(key);
+    const expandedKey = await expandKey(key);
 
     for (let i = 0; i < inStream.length; i += BLOCK_SIZE) {
         const delta = length - i;
