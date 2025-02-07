@@ -1,9 +1,9 @@
-import { vect, expandKey, expandKey_testPack } from '../src/kuznechik';
+import { byte, expandKey, expandKey_testPack, toByteArray } from '../src/kuznechik';
 import { expect } from 'chai';
 
 describe('expandKey function tests', () => {
     it('Create a key', () => {
-        const test_key: vect = [
+        const test_key: byte[] = [
             0xef, 0xcd, 0xab, 0x89, 0x67, 0x45, 0x23, 0x01,
             0x10, 0x32, 0x54, 0x76, 0x98, 0xba, 0xdc, 0xfe,
             0x77, 0x66, 0x55, 0x44, 0x33, 0x22, 0x11, 0x00,
@@ -249,13 +249,16 @@ describe('expandKey function tests', () => {
             ]
         };
 
-        const actual = expandKey(test_key);
+        const {iter_c, iter_key} = expandKey(new Uint8Array(test_key));
 
-        expect(actual).deep.eq(expected);
+        expect({
+            iter_c: iter_c.map(x => toByteArray(x)), 
+            iter_key: iter_key.map(x => toByteArray(x))
+        }).deep.eq(expected);
     });
 
     describe("GOST_Kuz_F", () => {
-        const testData: { in_key_1: vect, in_key_2: vect, iter_const: vect, out_key_1: vect, out_key_2: vect }[] = [{
+        const testData: { in_key_1: byte[], in_key_2: byte[], iter_const: byte[], out_key_1: byte[], out_key_2: byte[] }[] = [{
             in_key_1: [51, 27, 1, 151, 196, 66, 71, 71, 252, 89, 29, 98, 141, 22, 126, 160],
             in_key_2: [91, 161, 222, 228, 91, 116, 80, 173, 178, 207, 102, 87, 135, 127, 16, 236],
             iter_const: [29, 255, 236, 70, 19, 44, 117, 222, 69, 171, 164, 246, 67, 55, 132, 204],
@@ -283,9 +286,9 @@ describe('expandKey function tests', () => {
 
         testData.forEach((testItem, index) => {
             it(`test set #${index}`, () => {
-                const actual = expandKey_testPack.GOST_Kuz_F(testItem.in_key_1, testItem.in_key_2, testItem.iter_const);
-                expect(testItem.out_key_1).deep.eq(actual.out_key_1);
-                expect(testItem.out_key_2).deep.eq(actual.out_key_2);
+                const actual = expandKey_testPack.GOST_Kuz_F(new Uint8Array(testItem.in_key_1), new Uint8Array(testItem.in_key_2), new Uint8Array(testItem.iter_const));
+                expect(testItem.out_key_1).deep.eq(toByteArray(actual.out_key_1));
+                expect(testItem.out_key_2).deep.eq(toByteArray(actual.out_key_2));
             });
         });
     });
@@ -327,9 +330,8 @@ describe('expandKey function tests', () => {
         ];
 
         it("data set #0", () => {
-            const actual = expandKey_testPack.GOST_Kuz_Get_C();
+            const actual = expandKey_testPack.GOST_Kuz_Get_C().map(x => toByteArray(x));
             expect(expected).deep.eq(actual);
         });
     });
-
 });

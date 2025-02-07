@@ -1,11 +1,11 @@
 import * as R from 'ramda';
-import { vect, decrypt_testPackage, expandKey, decryptBlock, encrypt, decrypt, toByteArray, toByte, KEY_SIZE } from '../src/kuznechik';
+import { decrypt_testPackage, expandKey, decryptBlock, encrypt, decrypt, toByteArray, toByte, KEY_SIZE, byte } from '../src/kuznechik';
 import { expect } from 'chai';
 import { randomBytes, randomInt } from 'crypto';
 
 describe('Decrypt tests', () => {
     describe("GOST_Kuz_reverse_S", () => {
-        const testData: { in_data: vect, expected: vect }[] = [{
+        const testData: { in_data: byte[], expected: byte[] }[] = [{
             in_data: [219, 50, 84, 141, 43, 14, 158, 224, 133, 93, 125, 102, 182, 211, 239, 238],
             expected: [19, 112, 121, 216, 229, 82, 109, 144, 222, 94, 187, 249, 255, 62, 38, 1],
         }, {
@@ -24,14 +24,14 @@ describe('Decrypt tests', () => {
 
         testData.forEach((testItem, index) => {
             it(`test set #${index}`, () => {
-                const actual = decrypt_testPackage.GOST_Kuz_reverse_S(testItem.in_data);
-                expect(testItem.expected).deep.eq(actual);
+                const actual = decrypt_testPackage.GOST_Kuz_reverse_S(new Uint8Array(testItem.in_data));
+                expect(testItem.expected).deep.eq(toByteArray(actual));
             });
         });
     });
 
     describe("GOST_Kuz_reverse_L", () => {
-        const testData: { in_data: vect, expected: vect }[] = [{
+        const testData: { in_data: byte[], expected: byte[] }[] = [{
             in_data: [12, 64, 71, 13, 155, 22, 189, 234, 143, 119, 245, 232, 60, 172, 163, 7],
             expected: [39, 195, 20, 6, 109, 4, 12, 173, 184, 160, 50, 116, 63, 249, 116, 110],
         }, {
@@ -50,14 +50,14 @@ describe('Decrypt tests', () => {
 
         testData.forEach((testItem, index) => {
             it(`test set #${index}`, () => {
-                const actual = decrypt_testPackage.GOST_Kuz_reverse_L(testItem.in_data);
-                expect(testItem.expected).deep.eq(actual);
+                const actual = decrypt_testPackage.GOST_Kuz_reverse_L(new Uint8Array(testItem.in_data));
+                expect(testItem.expected).deep.eq(toByteArray(actual));
             });
         });
     });
 
     describe("GOST_Kuz_reverse_R", () => {
-        const testData: { in_data: vect, expected: vect }[] = [{
+        const testData: { in_data: byte[], expected: byte[] }[] = [{
             in_data: [0, 128, 229, 222, 45, 60, 151, 41, 144, 247, 18, 91, 249, 79, 224, 136],
             expected: [199, 0, 128, 229, 222, 45, 60, 151, 41, 144, 247, 18, 91, 249, 79, 224],
         }, {
@@ -76,57 +76,57 @@ describe('Decrypt tests', () => {
 
         testData.forEach((testItem, index) => {
             it(`test set #${index}`, () => {
-                const actual = decrypt_testPackage.GOST_Kuz_reverse_R(testItem.in_data);
-                expect(testItem.expected).deep.eq(actual);
+                const actual = decrypt_testPackage.GOST_Kuz_reverse_R(new Uint8Array(testItem.in_data));
+                expect(testItem.expected).deep.eq(toByteArray(actual));
             });
         });
     });
 
     it('decryptBlock vect', () => {
-        const test_key: vect = [
+        const test_key: byte[] = [
             0xef, 0xcd, 0xab, 0x89, 0x67, 0x45, 0x23, 0x01,
             0x10, 0x32, 0x54, 0x76, 0x98, 0xba, 0xdc, 0xfe,
             0x77, 0x66, 0x55, 0x44, 0x33, 0x22, 0x11, 0x00,
             0xff, 0xee, 0xdd, 0xcc, 0xbb, 0xaa, 0x99, 0x88
         ];
 
-        const test_string: vect = [
+        const test_string: byte[] = [
             0xcd, 0xed, 0xd4, 0xb9, 0x42, 0x8d, 0x46, 0x5a,
             0x30, 0x24, 0xbc, 0xbe, 0x90, 0x9d, 0x67, 0x7f
         ];
 
-        const expected: vect = [
+        const expected: byte[] = [
             0x88, 0x99, 0xaa, 0xbb, 0xcc, 0xdd, 0xee, 0xff,
             0x00, 0x77, 0x66, 0x55, 0x44, 0x33, 0x22, 0x11
         ];
 
-        const expandedKey = expandKey(test_key);
-        const actual = decryptBlock(expandedKey, test_string);
+        const expandedKey = expandKey(new Uint8Array(test_key));
+        const actual = decryptBlock(expandedKey, new Uint8Array(test_string));
 
-        expect(actual).deep.eq(expected);
+        expect(toByteArray(actual)).deep.eq(expected);
     });
 
     it('decryptBlock string', () => {
         const test_key = "Secret phrase!";
 
-        const test_string: vect = [
+        const test_string: byte[] = [
             0x05, 0xAF, 0xD9, 0xAB, 0x65, 0x9E, 0xAA, 0x9F,
             0x13, 0xC0, 0x06, 0xC9, 0x54, 0x48, 0x42, 0xDD
         ];
 
-        const expected: vect = [
+        const expected: byte[] = [
             0x88, 0x99, 0xaa, 0xbb, 0xcc, 0xdd, 0xee, 0xff,
             0x00, 0x77, 0x66, 0x55, 0x44, 0x33, 0x22, 0x11
         ];
 
         const expandedKey = expandKey(test_key);
-        const actual = decryptBlock(expandedKey, test_string);
+        const actual = decryptBlock(expandedKey, new Uint8Array(test_string));
 
-        expect(actual).deep.eq(expected);
+        expect(toByteArray(actual)).deep.eq(expected);
     });
 
     it("simple encrypt/decrypt", () => {
-        const test_key: vect = [
+        const test_key: byte[] = [
             0xef, 0xcd, 0xab, 0x89, 0x67, 0x45, 0x23, 0x01,
             0x10, 0x32, 0x54, 0x76, 0x98, 0xba, 0xdc, 0xfe,
             0x77, 0x66, 0x55, 0x44, 0x33, 0x22, 0x11, 0x00,
@@ -135,8 +135,8 @@ describe('Decrypt tests', () => {
 
         const source = [1, 2, 3];
 
-        const encrypted = encrypt(test_key, new Uint8Array(source));
-        const decrypted = decrypt(test_key, encrypted, source.length);
+        const encrypted = encrypt(new Uint8Array(test_key), new Uint8Array(source));
+        const decrypted = decrypt(new Uint8Array(test_key), encrypted, source.length);
 
         const actual = toByteArray(decrypted);
 
@@ -144,17 +144,17 @@ describe('Decrypt tests', () => {
     });
 
     it("zero encrypt/decrypt", () => {
-        const test_key: vect = [
+        const test_key: byte[] = [
             0xef, 0xcd, 0xab, 0x89, 0x67, 0x45, 0x23, 0x01,
             0x10, 0x32, 0x54, 0x76, 0x98, 0xba, 0xdc, 0xfe,
             0x77, 0x66, 0x55, 0x44, 0x33, 0x22, 0x11, 0x00,
             0xff, 0xee, 0xdd, 0xcc, 0xbb, 0xaa, 0x99, 0x88
         ];
 
-        const source: vect = [];
+        const source: byte[] = [];
 
-        const encrypted = encrypt(test_key, new Uint8Array(source));
-        const decrypted = decrypt(test_key, encrypted, source.length);
+        const encrypted = encrypt(new Uint8Array(test_key), new Uint8Array(source));
+        const decrypted = decrypt(new Uint8Array(test_key), encrypted, source.length);
 
         const actual = toByteArray(decrypted);
 
@@ -164,14 +164,14 @@ describe('Decrypt tests', () => {
     describe("Decrypt Streams", () => {
         const count = 5;
         R.range(0, count).forEach(i => {
-            const test_key: vect = [...randomBytes(KEY_SIZE)].map(v => toByte(v));
+            const test_key: byte[] = [...randomBytes(KEY_SIZE)].map(v => toByte(v));
 
             const size = randomInt(1000);
-            const source: vect = [...randomBytes(size)].map(v => toByte(v));
+            const source: byte[] = [...randomBytes(size)].map(v => toByte(v));
 
             it(`encrypt/decrypt random #${i} ${size} bytes`, () => {
-                const encrypted = encrypt(test_key, new Uint8Array(source));
-                const decrypted = decrypt(test_key, encrypted, source.length);
+                const encrypted = encrypt(new Uint8Array(test_key), new Uint8Array(source));
+                const decrypted = decrypt(new Uint8Array(test_key), encrypted, source.length);
         
                 const actual = toByteArray(decrypted);
                 expect(actual).deep.eq(actual);
