@@ -2,7 +2,7 @@ import { expandKey, encryptBlock, byte, toByteArray } from '../src/kuznechik';
 import { expect } from 'chai';
 
 describe('Encrypt tests', () => {
-    it('encryptBlock vect', () => {
+    it('encryptBlock vect', async () => {
         const test_key: byte[] = [
             0xef, 0xcd, 0xab, 0x89, 0x67, 0x45, 0x23, 0x01,
             0x10, 0x32, 0x54, 0x76, 0x98, 0xba, 0xdc, 0xfe,
@@ -20,13 +20,13 @@ describe('Encrypt tests', () => {
             0x30, 0x24, 0xbc, 0xbe, 0x90, 0x9d, 0x67, 0x7f
         ];
 
-        const expandedKey = expandKey(new Uint8Array(test_key));
+        const expandedKey = await expandKey(new Uint8Array(test_key));
         const actual = encryptBlock(expandedKey, new Uint8Array(test_string));
 
         expect(toByteArray(actual)).deep.eq(expected);
     });
 
-    it('encryptBlock string', () => {
+    it('encryptBlock string', async () => {
         const test_key = "Secret phrase!";
 
         const test_string: byte[] = [
@@ -39,7 +39,7 @@ describe('Encrypt tests', () => {
             0x13, 0xC0, 0x06, 0xC9, 0x54, 0x48, 0x42, 0xDD
         ];
 
-        const expandedKey = expandKey(test_key);
+        const expandedKey = await expandKey(test_key);
         const actual = encryptBlock(expandedKey, new Uint8Array(test_string));
 
         expect(toByteArray(actual)).deep.eq(expected);

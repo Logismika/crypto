@@ -2,7 +2,7 @@ import { byte, expandKey, expandKey_testPack, toByteArray } from '../src/kuznech
 import { expect } from 'chai';
 
 describe('expandKey function tests', () => {
-    it('Create a key', () => {
+    it('Create a key', async () => {
         const test_key: byte[] = [
             0xef, 0xcd, 0xab, 0x89, 0x67, 0x45, 0x23, 0x01,
             0x10, 0x32, 0x54, 0x76, 0x98, 0xba, 0xdc, 0xfe,
@@ -249,7 +249,7 @@ describe('expandKey function tests', () => {
             ]
         };
 
-        const {iter_c, iter_key} = expandKey(new Uint8Array(test_key));
+        const {iter_c, iter_key} = await expandKey(new Uint8Array(test_key));
 
         expect({
             iter_c: iter_c.map(x => toByteArray(x)), 

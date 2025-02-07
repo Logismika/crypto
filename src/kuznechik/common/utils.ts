@@ -19,3 +19,10 @@ export const toByte = (value: number): byte => {
 
 export const getOutLength = (inLength: number): number =>
     Math.floor(inLength / BLOCK_SIZE) * BLOCK_SIZE + (inLength % BLOCK_SIZE === 0 ? 0 : BLOCK_SIZE);
+
+export const digestMessage = async (value: string): Promise<Uint8Array> => {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(value);
+    const hash = await crypto.subtle.digest("SHA-256", data);
+    return new Uint8Array(hash);
+}

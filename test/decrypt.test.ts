@@ -82,7 +82,7 @@ describe('Decrypt tests', () => {
         });
     });
 
-    it('decryptBlock vect', () => {
+    it('decryptBlock vect', async () => {
         const test_key: byte[] = [
             0xef, 0xcd, 0xab, 0x89, 0x67, 0x45, 0x23, 0x01,
             0x10, 0x32, 0x54, 0x76, 0x98, 0xba, 0xdc, 0xfe,
@@ -100,13 +100,13 @@ describe('Decrypt tests', () => {
             0x00, 0x77, 0x66, 0x55, 0x44, 0x33, 0x22, 0x11
         ];
 
-        const expandedKey = expandKey(new Uint8Array(test_key));
+        const expandedKey = await expandKey(new Uint8Array(test_key));
         const actual = decryptBlock(expandedKey, new Uint8Array(test_string));
 
         expect(toByteArray(actual)).deep.eq(expected);
     });
 
-    it('decryptBlock string', () => {
+    it('decryptBlock string', async () => {
         const test_key = "Secret phrase!";
 
         const test_string: byte[] = [
@@ -119,13 +119,13 @@ describe('Decrypt tests', () => {
             0x00, 0x77, 0x66, 0x55, 0x44, 0x33, 0x22, 0x11
         ];
 
-        const expandedKey = expandKey(test_key);
+        const expandedKey = await expandKey(test_key);
         const actual = decryptBlock(expandedKey, new Uint8Array(test_string));
 
         expect(toByteArray(actual)).deep.eq(expected);
     });
 
-    it("simple encrypt/decrypt", () => {
+    it("simple encrypt/decrypt", async () => {
         const test_key: byte[] = [
             0xef, 0xcd, 0xab, 0x89, 0x67, 0x45, 0x23, 0x01,
             0x10, 0x32, 0x54, 0x76, 0x98, 0xba, 0xdc, 0xfe,
@@ -135,15 +135,15 @@ describe('Decrypt tests', () => {
 
         const source = [1, 2, 3];
 
-        const encrypted = encrypt(new Uint8Array(test_key), new Uint8Array(source));
-        const decrypted = decrypt(new Uint8Array(test_key), encrypted, source.length);
+        const encrypted = await encrypt(new Uint8Array(test_key), new Uint8Array(source));
+        const decrypted = await decrypt(new Uint8Array(test_key), encrypted, source.length);
 
         const actual = toByteArray(decrypted);
 
         expect(actual).deep.eq(source);
     });
 
-    it("zero encrypt/decrypt", () => {
+    it("zero encrypt/decrypt", async () => {
         const test_key: byte[] = [
             0xef, 0xcd, 0xab, 0x89, 0x67, 0x45, 0x23, 0x01,
             0x10, 0x32, 0x54, 0x76, 0x98, 0xba, 0xdc, 0xfe,
@@ -153,8 +153,8 @@ describe('Decrypt tests', () => {
 
         const source: byte[] = [];
 
-        const encrypted = encrypt(new Uint8Array(test_key), new Uint8Array(source));
-        const decrypted = decrypt(new Uint8Array(test_key), encrypted, source.length);
+        const encrypted = await encrypt(new Uint8Array(test_key), new Uint8Array(source));
+        const decrypted = await decrypt(new Uint8Array(test_key), encrypted, source.length);
 
         const actual = toByteArray(decrypted);
 
@@ -169,9 +169,9 @@ describe('Decrypt tests', () => {
             const size = randomInt(1000);
             const source: byte[] = [...randomBytes(size)].map(v => toByte(v));
 
-            it(`encrypt/decrypt random #${i} ${size} bytes`, () => {
-                const encrypted = encrypt(new Uint8Array(test_key), new Uint8Array(source));
-                const decrypted = decrypt(new Uint8Array(test_key), encrypted, source.length);
+            it(`encrypt/decrypt random #${i} ${size} bytes`, async () => {
+                const encrypted = await encrypt(new Uint8Array(test_key), new Uint8Array(source));
+                const decrypted = await decrypt(new Uint8Array(test_key), encrypted, source.length);
         
                 const actual = toByteArray(decrypted);
                 expect(actual).deep.eq(actual);
