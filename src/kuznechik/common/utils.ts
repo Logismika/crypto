@@ -1,17 +1,6 @@
 import { byte } from "./types";
 import { BLOCK_SIZE } from "./consts";
 
-export const alignByteArray = (buf: Uint8Array, length: number): Uint8Array => {
-    const result = new Uint8Array(length);
-    if (buf.length > length) {
-        result.set(buf.slice(0, length));
-    } else {
-        result.set(buf, 0);
-    }
-
-    return result;
-}
-
 export const toByteArray = (buf: Uint8Array): byte[] => {
     const result: byte[] = [];
     buf.forEach((value) => {

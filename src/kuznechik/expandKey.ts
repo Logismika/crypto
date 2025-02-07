@@ -1,12 +1,12 @@
 import { createHash } from "crypto";
 import * as R from "ramda";
-import { ExpandedKey, alignByteArray, KEY_SIZE, BLOCK_SIZE, toByte, GOST_Kuz_L, GOST_Kuz_X, GOST_Kuz_S } from "./common";
+import { ExpandedKey, KEY_SIZE, BLOCK_SIZE, toByte, GOST_Kuz_L, GOST_Kuz_X, GOST_Kuz_S } from "./common";
 
 export const expandKey = (key: string | Uint8Array) =>
     typeof key === "string" ? expandKeyString(key) : expandKeyArray(key);
 
 const expandKeyString = (key: string): ExpandedKey =>
-    expandKeyArray(alignByteArray(createHash("sha256").update(key).digest(), KEY_SIZE));
+    expandKeyArray(createHash("sha256").update(key).digest());
 
 const expandKeyArray = (key: Uint8Array): ExpandedKey => {
     if (key.length !== KEY_SIZE) {

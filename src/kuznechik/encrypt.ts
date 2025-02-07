@@ -1,4 +1,4 @@
-import { BLOCK_SIZE, alignByteArray, ExpandedKey, getOutLength, GOST_Kuz_L, GOST_Kuz_S, GOST_Kuz_X } from "./common";
+import { BLOCK_SIZE, ExpandedKey, getOutLength, GOST_Kuz_L, GOST_Kuz_S, GOST_Kuz_X } from "./common";
 import { expandKey } from "./expandKey";
 
 export const encrypt = (key: string | Uint8Array, inStream: Uint8Array): Uint8Array => {
@@ -7,7 +7,7 @@ export const encrypt = (key: string | Uint8Array, inStream: Uint8Array): Uint8Ar
     const expandedKey = expandKey(key);
 
     for (let i = 0; i < inStream.length; i += BLOCK_SIZE) {
-        const block = alignByteArray(inStream.subarray(i, BLOCK_SIZE), BLOCK_SIZE);
+        const block = inStream.subarray(i, BLOCK_SIZE);
         const encrypted = encryptBlock(expandedKey, block);
         result.set(encrypted, i);
     }
