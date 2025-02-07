@@ -4,8 +4,8 @@ import { BLOCK_SIZE } from "./consts";
 
 export const createBytes = (count: number): vect => R.range(0, count).map(() => toByte(0));
 
-export const toByteArray = (buf: Uint8Array, length?: number): byte[] => {
-    const result: byte[] = [];
+export const toByteArray = (buf: Uint8Array, length?: number): vect => {
+    const result: vect = [];
     buf.forEach((value) => {
         result.push(toByte(value));
     });
