@@ -7,7 +7,7 @@ export const encrypt = async (key: string | Uint8Array, data: Uint8Array): Promi
     const expandedKey = await expandKey(key);
 
     for (let i = 0; i < data.length; i += BLOCK_SIZE) {
-        const block = data.subarray(i, BLOCK_SIZE);
+        const block = data.subarray(i, i + BLOCK_SIZE);
         const encrypted = encryptBlock(expandedKey, block);
         result.set(encrypted, i);
     }

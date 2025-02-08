@@ -1,0 +1,88 @@
+{
+    "users": [
+        {
+            "id": 1,
+            "name": "Алексей Петров",
+            "age": 28,
+            "email": "alexey@example.com",
+            "is_active": true
+        },
+        {
+            "id": 2,
+            "name": "Мария Иванова",
+            "age": 34,
+            "email": "maria@example.com",
+            "is_active": false
+        }
+    ],
+    "goods": [
+        {
+            "product_id": "P001",
+            "name": "Смартфон",
+            "category": "Электроника",
+            "price": 29999.99,
+            "in_stock": true
+        },
+        {
+            "product_id": "P002",
+            "name": "Книга 'Война и мир'",
+            "category": "Литература",
+            "price": 1500.50,
+            "in_stock": false
+        }
+    ],
+    "tasks": [
+        {
+            "task_id": "TASK-101",
+            "description": "Разработать новый интерфейс",
+            "status": "в процессе",
+            "deadline": "2023-12-15",
+            "priority": "высокий"
+        },
+        {
+            "task_id": "TASK-102",
+            "description": "Тестирование API",
+            "status": "завершено",
+            "deadline": "2023-11-30",
+            "priority": "средний"
+        }
+    ],
+    "movies": [
+        {
+            "title": "Интерстеллар",
+            "year": 2014,
+            "genre": [
+                "фантастика",
+                "драма"
+            ],
+            "rating": 8.6,
+            "director": "Кристофер Нолан"
+        },
+        {
+            "title": "Крестный отец",
+            "year": 1972,
+            "genre": [
+                "криминал",
+                "драма"
+            ],
+            "rating": 9.2,
+            "director": "Фрэнсис Форд Коппола"
+        }
+    ],
+    "weather": [
+        {
+            "city": "Москва",
+            "date": "2023-10-25",
+            "temperature": 5.2,
+            "conditions": "облачно",
+            "humidity": 78
+        },
+        {
+            "city": "Санкт-Петербург",
+            "date": "2023-10-25",
+            "temperature": 3.8,
+            "conditions": "дождь",
+            "humidity": 85
+        }
+    ]
+}

@@ -1,5 +1,5 @@
 import * as R from "ramda";
-import { decrypt_testPackage, expandKey, decryptBlock, encrypt, decrypt, toByte, KEY_SIZE, byte } from "../../src/kuznechik";
+import { decrypt_testPackage, expandKey, decryptBlock, encrypt, decrypt, toByte, KEY_SIZE, byte, BLOCK_SIZE, encryptBlock } from "../../src/kuznechik";
 import { expect } from "chai";
 import { randomBytes, randomInt } from "crypto";
 import { toByteArray } from "../utils";
@@ -162,20 +162,33 @@ describe("Decrypt tests", () => {
         expect(actual).deep.eq(source);
     });
 
-    describe("Decrypt Streams", () => {
-        const count = 5;
+    describe("Decrypt Block Streams", () => {
+        const count = 15;
         R.range(0, count).forEach(i => {
-            const test_key: byte[] = [...randomBytes(KEY_SIZE)].map(v => toByte(v));
+            const test_key = new Uint8Array([...randomBytes(KEY_SIZE)]);
+            const source = new Uint8Array([...randomBytes(BLOCK_SIZE)]);
 
-            const size = randomInt(1000);
-            const source: byte[] = [...randomBytes(size)].map(v => toByte(v));
+            it(`encrypt/decrypt block random #${i}`, async () => {
+                const key = await expandKey(test_key);
+                const encryptedBlock = encryptBlock(key, source);
+                const decryptedBlock = decryptBlock(key, encryptedBlock);
+                expect(decryptedBlock).deep.eq(source);
+            });
+        });
+    });
+
+    describe("Decrypt Streams", () => {
+        const count = 15;
+        R.range(0, count).forEach(i => {
+            const test_key = new Uint8Array([...randomBytes(KEY_SIZE)]);
+
+            const size = randomInt(300);
+            const source = new Uint8Array([...randomBytes(size)]);
 
             it(`encrypt/decrypt random #${i} ${size} bytes`, async () => {
-                const encrypted = await encrypt(new Uint8Array(test_key), new Uint8Array(source));
-                const decrypted = await decrypt(new Uint8Array(test_key), encrypted, source.length);
-        
-                const actual = toByteArray(decrypted);
-                expect(actual).deep.eq(actual);
+                const encrypted = await encrypt(test_key, source);
+                const decrypted = await decrypt(test_key, encrypted, source.length);
+                expect(decrypted).deep.eq(source);
             });
         });
     });
