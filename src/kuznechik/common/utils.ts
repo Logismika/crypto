@@ -1,14 +1,6 @@
 import { byte } from "./types";
 import { BLOCK_SIZE } from "./consts";
 
-export const toByteArray = (buf: Uint8Array): byte[] => {
-    const result: byte[] = [];
-    buf.forEach((value) => {
-        result.push(toByte(value));
-    });
-    return result;
-}
-
 export const toByte = (value: number): byte => {
     if (value < 0 || value >= 256) {
         throw new RangeError(`Byte value out of range. Value = ${value}`);

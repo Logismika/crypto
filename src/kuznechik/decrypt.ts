@@ -16,7 +16,7 @@ export const decrypt = async (key: string | Uint8Array, inStream: Uint8Array, le
 
     for (let i = 0; i < inStream.length; i += BLOCK_SIZE) {
         const delta = length - i;
-        const block = inStream.subarray(i, BLOCK_SIZE);
+        const block = inStream.subarray(i, i + BLOCK_SIZE);
         const decrypted = decryptBlock(expandedKey, block);
         const len = delta < BLOCK_SIZE ? delta : BLOCK_SIZE;
         result.set(decrypted.slice(0, len), i);

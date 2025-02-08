@@ -1,9 +1,10 @@
-import * as R from 'ramda';
-import { byte, getOutLength, GOST_Kuz_GF_mul, GOST_Kuz_L, GOST_Kuz_L_testPackage, GOST_Kuz_S, GOST_Kuz_X, toByte, toByteArray } from '../src/kuznechik';
+import * as R from "ramda";
+import { byte, getOutLength, GOST_Kuz_GF_mul, GOST_Kuz_L, GOST_Kuz_L_testPackage, GOST_Kuz_S, GOST_Kuz_X, toByte } from "../../src/kuznechik";
 import { expect } from "chai";
-import { randomBytes, randomInt } from 'crypto';
+import { randomBytes, randomInt } from "crypto";
+import { toByteArray } from "../utils";
 
-describe('Common Function Tests', () => {
+describe("Common Function Tests", () => {
     describe("GOST_Kuz_GF_mul", () => {
         const testData: { in_a: byte, in_b: byte, c: byte }[] = [
             { in_a: 92, in_b: 133, c: 45 },
