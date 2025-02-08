@@ -12,6 +12,4 @@ export interface Options {
      * Default: undefined (without compression)
      */
     readonly compression?: CompressionFormat;
-
-    readonly solt?: string | Uint8Array;
 }
