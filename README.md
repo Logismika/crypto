@@ -15,13 +15,13 @@ $ npm install @logismika/crypto
 ### encrypt
 
 ```ts
-const encryptedData = encrypt("Secret", new Uint8Array([1, 2, 3]));
+const encryptedData = await encrypt("Secret", new Uint8Array([1, 2, 3]));
 ```
 
 ### decrypt
 
 ```ts
-const decryptedData = decrypt("Secret", encryptedData, 3);
+const decryptedData = await decrypt("Secret", encryptedData, 3);
 ```
 
 *Note:* `3` is a length of decrypted array.
@@ -35,7 +35,7 @@ const secretKey = "Secret";
 const dataToEncrypt = new Uint8Array([1, 1, 1, 100, 100, 200]);
 
 const len = dataToEncrypt.length;
-const encryptedData = encrypt(secretKey, dataToEncrypt);
+const encryptedData = await encrypt(secretKey, dataToEncrypt);
 
-const decryptedData = decrypt(secretKey, encryptedData, len);
+const decryptedData = await decrypt(secretKey, encryptedData, len);
 ```
