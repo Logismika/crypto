@@ -1,13 +1,13 @@
 import { BLOCK_SIZE, ExpandedKey, getOutLength, GOST_Kuz_L, GOST_Kuz_S, GOST_Kuz_X } from "./common";
 import { expandKey } from "./expandKey";
 
-export const encrypt = async (key: string | Uint8Array, inStream: Uint8Array): Promise<Uint8Array> => {
-    const result = new Uint8Array(getOutLength(inStream.length));
+export const encrypt = async (key: string | Uint8Array, data: Uint8Array): Promise<Uint8Array> => {
+    const result = new Uint8Array(getOutLength(data.length));
     
     const expandedKey = await expandKey(key);
 
-    for (let i = 0; i < inStream.length; i += BLOCK_SIZE) {
-        const block = inStream.subarray(i, BLOCK_SIZE);
+    for (let i = 0; i < data.length; i += BLOCK_SIZE) {
+        const block = data.subarray(i, BLOCK_SIZE);
         const encrypted = encryptBlock(expandedKey, block);
         result.set(encrypted, i);
     }

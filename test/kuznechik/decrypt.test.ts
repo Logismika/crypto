@@ -1,9 +1,9 @@
-import * as R from 'ramda';
-import { decrypt_testPackage, expandKey, decryptBlock, encrypt, decrypt, toByteArray, toByte, KEY_SIZE, byte } from '../src/kuznechik';
-import { expect } from 'chai';
-import { randomBytes, randomInt } from 'crypto';
+import * as R from "ramda";
+import { decrypt_testPackage, expandKey, decryptBlock, encrypt, decrypt, toByteArray, toByte, KEY_SIZE, byte } from "../../src/kuznechik";
+import { expect } from "chai";
+import { randomBytes, randomInt } from "crypto";
 
-describe('Decrypt tests', () => {
+describe("Decrypt tests", () => {
     describe("GOST_Kuz_reverse_S", () => {
         const testData: { in_data: byte[], expected: byte[] }[] = [{
             in_data: [219, 50, 84, 141, 43, 14, 158, 224, 133, 93, 125, 102, 182, 211, 239, 238],
@@ -82,7 +82,7 @@ describe('Decrypt tests', () => {
         });
     });
 
-    it('decryptBlock vect', async () => {
+    it("decryptBlock vect", async () => {
         const test_key: byte[] = [
             0xef, 0xcd, 0xab, 0x89, 0x67, 0x45, 0x23, 0x01,
             0x10, 0x32, 0x54, 0x76, 0x98, 0xba, 0xdc, 0xfe,
@@ -106,7 +106,7 @@ describe('Decrypt tests', () => {
         expect(toByteArray(actual)).deep.eq(expected);
     });
 
-    it('decryptBlock string', async () => {
+    it("decryptBlock string", async () => {
         const test_key = "Secret phrase!";
 
         const test_string: byte[] = [

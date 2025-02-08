@@ -12,7 +12,7 @@
     "build": "npm run build:esm && npm run build:cjs",
     "build:esm": "tsc",
     "build:cjs": "tsc --module commonjs --outDir build/cjs",
-    "test": "mocha"
+    "test": "mocha test/{,**/}*.test.ts"
   },
   "dependencies": {
     "ramda": "^0.30.1"
