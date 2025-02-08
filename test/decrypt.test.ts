@@ -1,4 +1,4 @@
-import { encrypt, decrypt} from "../src";
+import { encrypt, decrypt } from "../src";
 import { expect } from "chai";
 import * as R from "ramda";
 
@@ -17,7 +17,7 @@ describe("Decrypt tests", () => {
         const source = new Uint8Array([1, 2, 3]);
 
         const encrypted = await encrypt(test_key, source);
-        const decrypted = await decrypt(test_key, encrypted, source.length);
+        const decrypted = await decrypt(test_key, encrypted);
 
         expect(decrypted).deep.eq(source);
     });
@@ -25,7 +25,7 @@ describe("Decrypt tests", () => {
     it("empty array encrypt/decrypt", async () => {
         const source = new Uint8Array();
         const encrypted = await encrypt(test_key, source);
-        const decrypted = await decrypt(test_key, encrypted, source.length);
+        const decrypted = await decrypt(test_key, encrypted);
         expect(decrypted).deep.eq(source);
     });
 
@@ -33,13 +33,13 @@ describe("Decrypt tests", () => {
         const source = "";
         const data = stringToByteArray(source);
         const encrypted = await encrypt(test_key, data);
-        const decrypted = await decrypt(test_key, encrypted, data.length);
+        const decrypted = await decrypt(test_key, encrypted);
         const actual = stringFromByteArray(decrypted);
         expect(actual).deep.eq(source);
     });
 
 
-    describe("Complext Tests", ()  => {
+    describe("Complext Tests", () => {
         const compressionFormats: (undefined | CompressionFormat)[] = [undefined, "deflate", "deflate-raw", "gzip"];
         const dataSets = [users, goods, tasks, movies, weather];
         compressionFormats.forEach(cf => {
@@ -49,8 +49,8 @@ describe("Decrypt tests", () => {
                     it(`enrypt/decrypt data set #${index}`, async () => {
                         const source = JSON.stringify(ds);
                         const data = stringToByteArray(source);
-                        const encrypted = await encrypt(test_key, data);
-                        const decrypted = await decrypt(test_key, encrypted, data.length);
+                        const encrypted = await encrypt(test_key, data, { compression: cf });
+                        const decrypted = await decrypt(test_key, encrypted, { compression: cf });
                         expect(data).deep.eq(decrypted);
                         const actual = stringFromByteArray(decrypted);
                         expect(actual).deep.eq(source);
