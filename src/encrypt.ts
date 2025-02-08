@@ -1,9 +1,14 @@
 import { Options } from "./options";
-import { encrypt as encrypt_kuznechik } from "./kuznechik/encrypt";
 import * as R from "ramda";
 import { compressByteArray } from "./compression";
+import * as kuznechik from "./kuznechik";
 
-export const encrypt = async (key: string | Uint8Array, data: Uint8Array, options: Options = {}): Promise<Uint8Array> => {
+export interface EncryptedData {
+    readonly length: number;
+    readonly bytes: Uint8Array;
+}
+
+export const encrypt = async (key: string | Uint8Array, data: Uint8Array, options: Options = {}): Promise<EncryptedData> => {
     const algorythm = options.algorythm ?? "Kuznechik";
 
     const dataCompressed = R.isNil(options.compression) ?
@@ -12,7 +17,10 @@ export const encrypt = async (key: string | Uint8Array, data: Uint8Array, option
 
     switch (algorythm) {
         case "Kuznechik":
-            return await encrypt_kuznechik(key, dataCompressed);
+            return {
+                length: dataCompressed.length,
+                bytes: await kuznechik.encrypt(key, dataCompressed)
+            };
         default:
             const _: never = algorythm;
             throw new Error(`Unknown algorythm "${algorythm}"`);
