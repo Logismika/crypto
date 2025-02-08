@@ -15,6 +15,7 @@
       "noImplicitAny": true,
       "strict": true,
       "noUncheckedIndexedAccess": true,
+      "resolveJsonModule": true
   },
   "include": ["src"],
   "exclude": ["node_modules", "build"],

@@ -1,8 +1,9 @@
-import { expandKey, encryptBlock, byte, toByteArray } from '../src/kuznechik';
-import { expect } from 'chai';
+import { expandKey, encryptBlock, byte } from "../../src/kuznechik";
+import { expect } from "chai";
+import { toByteArray } from "../utils";
 
-describe('Encrypt tests', () => {
-    it('encryptBlock vect', async () => {
+describe("Encrypt tests", () => {
+    it("encryptBlock vect", async () => {
         const test_key: byte[] = [
             0xef, 0xcd, 0xab, 0x89, 0x67, 0x45, 0x23, 0x01,
             0x10, 0x32, 0x54, 0x76, 0x98, 0xba, 0xdc, 0xfe,
@@ -26,7 +27,7 @@ describe('Encrypt tests', () => {
         expect(toByteArray(actual)).deep.eq(expected);
     });
 
-    it('encryptBlock string', async () => {
+    it("encryptBlock string", async () => {
         const test_key = "Secret phrase!";
 
         const test_string: byte[] = [
