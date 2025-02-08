@@ -1,5 +1,6 @@
-import { expandKey, encryptBlock, byte, toByteArray } from "../../src/kuznechik";
+import { expandKey, encryptBlock, byte } from "../../src/kuznechik";
 import { expect } from "chai";
+import { toByteArray } from "../utils";
 
 describe("Encrypt tests", () => {
     it("encryptBlock vect", async () => {

@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import {stringFromByteArray, stringToByteArray} from "../src/utils";
 
-describe.only("Utils Tests", () => {
+describe("Utils Tests", () => {
 
     describe("stringToByteArray tests", () => {
         const sourceStrings = [

@@ -1,5 +1,6 @@
-import { byte, expandKey, expandKey_testPack, toByteArray } from "../../src/kuznechik";
+import { byte, expandKey, expandKey_testPack } from "../../src/kuznechik";
 import { expect } from "chai";
+import { toByteArray } from "../utils";
 
 describe("expandKey function tests", () => {
     it("Create a key", async () => {

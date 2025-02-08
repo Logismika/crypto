@@ -1,7 +1,8 @@
 import * as R from "ramda";
-import { decrypt_testPackage, expandKey, decryptBlock, encrypt, decrypt, toByteArray, toByte, KEY_SIZE, byte } from "../../src/kuznechik";
+import { decrypt_testPackage, expandKey, decryptBlock, encrypt, decrypt, toByte, KEY_SIZE, byte } from "../../src/kuznechik";
 import { expect } from "chai";
 import { randomBytes, randomInt } from "crypto";
+import { toByteArray } from "../utils";
 
 describe("Decrypt tests", () => {
     describe("GOST_Kuz_reverse_S", () => {

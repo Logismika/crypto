@@ -9,5 +9,8 @@ export const encrypt = async (key: string | Uint8Array, data: string | Uint8Arra
     switch (algorythm) {
         case "Kuznechik":
             return await encrypt_kuznechik(key, dataBin);
+        default:
+            const _: never = algorythm;
+            throw new Error(`Unknown algorythm "${algorythm}"`);
     }
 }

@@ -1,1 +1,2 @@
-export const A = 100;
+export * from "./encrypt";
+export * from "./decrypt";
