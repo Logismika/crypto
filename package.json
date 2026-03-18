@@ -1,6 +1,6 @@
 {
   "name": "@logismika/crypto",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "private": false,
   "main": "./build/cjs/index.js",
   "module": "./build/esm/index.js",
@@ -25,7 +25,8 @@
     "chai": "^6.2.2",
     "mocha": "^11.7.5",
     "ts-node": "^10.9.2",
-    "typescript": "^5"
+    "typescript": "^5",
+    "serialize-javascript": "^7.0.3"
   },
   "engines": {
     "node": ">=18.18.0"
