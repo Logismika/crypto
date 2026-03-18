@@ -20,7 +20,7 @@
   "devDependencies": {
     "@types/chai": "^5.0.0",
     "@types/mocha": "^10.0.8",
-    "@types/node": "^22.13.1",
+    "@types/node": "^25.5.0",
     "@types/ramda": "^0.31.1",
     "chai": "^6.2.2",
     "mocha": "^11.7.5",
