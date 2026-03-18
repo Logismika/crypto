@@ -14,7 +14,7 @@ jobs:
           node-version: "24"
           cache: "npm"
       - name: Install node modules
-        run: npm install
+        run: npm ci
       - name: Run tests
         run: npm run test
   publish:
