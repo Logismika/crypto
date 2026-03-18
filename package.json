@@ -27,6 +27,9 @@
     "ts-node": "^10.9.2",
     "typescript": "^5"
   },
+  "engines": {
+    "node": ">=18.18.0"
+  },
   "description": "Crypto algorithms library",
   "directories": {
     "test": "test"
